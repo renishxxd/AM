@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('contact-bg.jpg'); /* Replace with actual image */
+            background-size: cover;
+            background-attachment: fixed;
+            color: #fff;
+        }
+        .contact-section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: #000;
+        }
+        h1, h2 { text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); }
+        .btn-custom { background-color: #388b6f; color: white; }
+        .btn-custom:hover { background-color: darkgreen; }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5 text-center">
+        <h1 class="fw-bold">Contact Us</h1>
+    </div>
+
+    <section class="contact-section container">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2>Get In <span style="color: #388b6f;">Touch</span></h2>
+                <p><strong>For more information, fill out the form or contact us directly.</strong></p>
+                <ul>
+                    <li><a href="tel:+91-72******37" style="color: inherit; text-decoration: none;">+91-72******37</a></li>
+                    <li><a href="mailto:dormabhu@gmail.com" style="color: inherit; text-decoration: none;">dormabhu@gmail.com</a></li>
+                </ul>
+            </div>            
+            <div class="col-md-6">
+                <form id="contactForm">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="text" id="fullName" class="form-control" placeholder="Full Name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="tel" id="phone" class="form-control" placeholder="Phone Number" required pattern="\d{10}" title="Phone number must be 10 digits">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="address" class="form-control" placeholder="Your Address" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <textarea id="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-custom w-100">Send Message</button>
+                </form>
+
+                <!-- Alert Box -->
+                <div id="alertMessage" class="alert d-none mt-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent page reload
+
+            let formData = {
+                fullName: document.getElementById("fullName").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                address: document.getElementById("address").value,
+                message: document.getElementById("message").value
+            };
+
+            // Send form data to Node.js backend
+            fetch("http://localhost:5000/send-email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage("success", "Message Sent Successfully!");
+                    document.getElementById("contactForm").reset();
+                } else {
+                    showMessage("danger", "Message sending failed.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showMessage("danger", "An error occurred.");
+            });
+        });
+
+        function showMessage(type, message) {
+            let alertBox = document.getElementById("alertMessage");
+            alertBox.className = `alert alert-${type} mt-3`;
+            alertBox.innerHTML = message;
+            alertBox.classList.remove("d-none");
+        }
+    </script>
+
+</body>
+</html>

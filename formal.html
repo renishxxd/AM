@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Cards</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            height: 400px; /* Reduce card height */
+            transition: transform .3s, box-shadow .3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card-body {
+            height: 120px; /* Adjust body height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card img {
+            height: 270px; /* Reduce image height */
+            object-fit: cover;
+        }
+        .title-box {
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            color: #8c7000;  
+            font-weight: 1000; 
+            font-family: 'Papyrus';
+        }
+        
+/* Custom Button Styles */
+.btn-cart {
+    background-color: #d4a017; /* Custom golden color */
+    border: none;
+    color: white;
+    font-size: 14px; /* Slightly larger font */
+    padding: 8px 15px; /* Increase padding for better clickability */
+    width: 120px; /* Wider button */
+    border-radius: 5px; /* Slightly rounded corners */
+    display: block; /* Makes it a block element */
+    margin: 10px auto; /* Centers the button horizontally */
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+.btn-cart:hover {
+    background-color: #b3860b; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight hover effect */
+}
+
+.btn-more-details {
+            background-color: #ff8c00; /* New custom color */
+            border: none;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.5s;
+        }
+        .btn-more-details:hover {
+            background-color: #e07b00;
+            transform: scale(1.05);
+        }
+        .cart-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+.cart-popup.show {
+    display: block;
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container mt-5 text-center">
+    <h2 class="mb-5 p-3 text-center border shadow" style="color: #8c7000;">Formal Collections</h2>
+    
+    <h4 class="title-box mb-0">Outfits For Men</h4>
+<div class="row">
+    <!-- Suit Set -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-men1.jpg" class="img-thumbnail" alt="Suit Set">
+            <div class="card-body text-center">
+                <h5 class="card-title">Suit Set</h5>
+                <p class="card-text"><strong>Price: $299.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(101, 'Suit Set', 299.99, 'fml-men1.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formal Shirt & Pant -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-men2.jpg" class="card-img-top img-thumbnail" alt="Formal Shirt & Pant">
+            <div class="card-body text-center">
+                <h5 class="card-title">Formal Shirt & Pant</h5>
+                <p class="card-text"><strong>Price: $349.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(102, 'Formal Shirt & Pant', 349.99, 'fml-men2.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winter Formal Suit -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-men3.jpg" class="card-img-top img-thumbnail" alt="Winter Formal Suit">
+            <div class="card-body text-center">
+                <h5 class="card-title">Winter Formal Suit</h5>
+                <p class="card-text"><strong>Price: $199.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(103, 'Winter Formal Suit', 199.99, 'fml-men3.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="title-box mb-0">Outfits For Women</h4>
+<div class="row">
+    <!-- Retro Ruffles Slim Cocktail Pencil Dress -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-women1.png" class="img-thumbnail" alt="Retro Ruffles Slim Cocktail Pencil Dress">
+            <div class="card-body text-center">
+                <h5 class="card-title">Retro Ruffles Slim Cocktail Pencil Dress</h5>
+                <p class="card-text"><strong>Price: $299.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(104, 'Retro Ruffles Slim Cocktail Pencil Dress', 299.99, 'fml-women1.png')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blazer Suits -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-women2.jpg" class="card-img-top img-thumbnail" alt="Blazer Suits">
+            <div class="card-body text-center">
+                <h5 class="card-title">Blazer Suits</h5>
+                <p class="card-text"><strong>Price: $349.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(105, 'Blazer Suits', 349.99, 'fml-women2.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jumpsuits -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-women3.jpg" class="card-img-top img-thumbnail" alt="Jumpsuits">
+            <div class="card-body text-center">
+                <h5 class="card-title">Jumpsuits</h5>
+                <p class="card-text"><strong>Price: $199.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(106, 'Jumpsuits', 199.99, 'fml-women3.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<h4 class="title-box mb-0">Outfits For Kids</h4>
+<div class="row">
+    <!-- Suit Set -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-kid1.jpg" class="img-thumbnail" alt="Suit Set">
+            <div class="card-body text-center">
+                <h5 class="card-title">Suits Set</h5>
+                <p class="card-text"><strong>Price: $299.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(107, 'Suits Set', 299.99, 'fml-kid1.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Papiliokids Outfit -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-kid2.jpg" class="img-thumbnail" alt="Papiliokids">
+            <div class="card-body text-center">
+                <h5 class="card-title">Papiliokids Outfit</h5>
+                <p class="card-text"><strong>Price: $349.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(108, 'Papiliokids Outfit', 349.99, 'fml-kid2.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tuxedo And Bow -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="fml-kid3.jpg" class="img-thumbnail" alt="Tuxedo And Bow">
+            <div class="card-body text-center">
+                <h5 class="card-title">Tuxedo And Bow</h5>
+                <p class="card-text"><strong>Price: $199.99</strong></p>
+                <button class="btn btn-cart btn-sm" onclick="addToCart(109, 'Tuxedo And Bow', 199.99, 'fml-kid3.jpg')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="text-center mt-2 mb-4">
+        <h4 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'"> 
+            If you are looking for something else, click below for more details.</h4>
+        <button class="btn btn-more-details btn-lg">More Details <i class="fas fa-arrow-right"></i></button>
+    </div>
+</div>
+
+<div id="cart-popup" class="cart-popup"></div>
+
+
+    <script>
+       function addToCart(id, name, price, img) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let item = cart.find(p => p.id === id);
+
+    if (item) {
+        item.quantity += 1;
+    } else {
+        cart.push({ id, name, price, quantity: 1, img });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Show popup with product name
+    let popup = document.getElementById("cart-popup");
+    popup.innerHTML = `<strong>${name}</strong> has been added to your cart!`;
+    popup.classList.add("show");
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+    }, 2000); // Hide popup after 2 seconds
+}
+
+
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

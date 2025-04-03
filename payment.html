@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Records</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Payment Records</h1>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Address</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="paymentRecords"></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchPayments() {
+            try {
+                const response = await fetch("http://localhost:5000/payments");
+                const payments = await response.json();
+                const paymentRecords = document.getElementById("paymentRecords");
+
+                payments.forEach(payment => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${payment.customerId}</td>
+                        <td>${payment.name}</td>
+                        <td>${payment.email}</td>
+                        <td>${payment.contact}</td>
+                        <td>${payment.address}</td>
+                        <td>${payment.paymentMethod}</td>
+                        <td>${payment.amount}</td>
+                        <td>${new Date(payment.date).toLocaleString()}</td>
+                    `;
+                    paymentRecords.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching payment records:", error);
+            }
+        }
+
+        // Fetch payments when the page loads
+        window.onload = fetchPayments;
+    </script>
+</body>
+</html>

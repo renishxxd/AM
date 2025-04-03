@@ -1,0 +1,132 @@
+body {
+  background-color: #ffffff; /* Light Golden Color */
+}
+
+/* Custom styles */
+
+.carousel img {
+  height: 400px; /* Adjust the height as needed */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+}
+
+.carousel-item {
+  position: relative;
+}
+
+
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(55, 55, 55, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Blur effect */
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+
+.custom-shadow {
+  box-shadow: 0px 4px 10px rgb(0, 0, 0); /* Golden shadow */
+  border: 2px solid rgb(195, 167, 6); /* Optional: Gold border */
+}
+
+.hero {
+  background-image: url('banner2.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 100px 0;
+}
+
+th, td {
+  text-align: center;
+}
+
+h1 { 
+  color : teal;
+  font-weight: bold;
+}
+
+h4 { 
+  color : mediumaquamarine;
+  font-weight: bold;
+}
+
+h6 { 
+  color : darkcyan;
+  font-weight: bold;
+}
+
+
+.destinations1 {
+  padding: 1px 0;
+}
+
+
+.profile-area {
+  padding: 80px 0;
+}
+
+.card {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+.img1 img {
+  height: 250px; 
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  width: 100%;
+  object-fit: cover; 
+}
+
+.img2 img {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1;
+  width: 150px; /* Adjusted width */
+  height: 150px; /* Adjusted height */
+  border-radius: 50%;
+  border: 5px solid #fff; /* Adjusted border width */
+  margin-top: -60px; /* Adjusted margin-top to center the image */
+}
+
+.card:hover .img2 img {
+  border-color: rgb(191, 188, 7);
+  transition: 0.7s;
+}
+
+.main-text {
+  padding: 30px 0;
+  text-align: center;
+}
+
+.main-text h2 {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 20px;
+  margin: 0 0 20px;
+}
+
+.main-text p {
+  font-size: 16px;
+  padding: 0 35px;
+}
+
+.btn {
+  margin-top: 3px;
+}
+
+
+

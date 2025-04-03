@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Payment Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        h3 {
+            text-align: center;
+            color: #2a5298;
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2a5298, #1e3c72);
+            transform: scale(1.05);
+        }
+        .bill {
+            display: none;
+            background: #f8f9fa;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .bill h4 {
+            color: #2a5298;
+        }
+        .copy-btn {
+            cursor: pointer;
+            background: #1e3c72;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        .copy-btn:hover {
+            background: #2a5298;
+        }
+        .payment-details {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h3>User Payment Details</h3>
+
+        <form id="payment-form">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="tel" id="contact" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Billing Address</label>
+                <input type="text" id="address" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Total Amount (₹)</label>
+                <input type="text" id="amount" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Payment Method</label>
+                <select class="form-control" id="payment-method" required>
+                    <option value="">Select Payment Method</option>
+                    <option value="upi">UPI</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="cod">Cash on Delivery</option>
+                </select>
+            </div>
+
+            <div id="upi-details" class="payment-details">
+                <label class="form-label">UPI Address</label>
+                <input type="text" id="upi" class="form-control">
+            </div>
+
+            <div id="card-details" class="payment-details">
+                <label class="form-label">Cardholder Name</label>
+                <input type="text" id="cardName" class="form-control">
+                <label class="form-label">Card Number</label>
+                <input type="text" id="cardNumber" class="form-control">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Expiry Date</label>
+                        <input type="text" id="expiry" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">CVV</label>
+                        <input type="text" id="cvv" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit Payment</button>
+
+        </form>
+
+        <div class="bill" id="bill-section">
+            <h4>Payment Successful</h4>
+            <p><strong>Customer ID:</strong> <span id="customerId"></span></p>
+            <p><strong>Total Amount Paid:</strong> ₹<span id="totalAmount"></span></p>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy ID</button>
+        </div>
+    </div>
+
+    <script>
+        // Load total amount from localStorage
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedAmount = localStorage.getItem("totalAmount");
+            if (storedAmount) {
+                document.getElementById("amount").value = storedAmount;
+            }
+        });
+
+        // Show payment fields based on selection
+        document.getElementById("payment-method").addEventListener("change", function () {
+            document.querySelectorAll(".payment-details").forEach(el => el.style.display = "none");
+            let selectedMethod = this.value;
+            if (selectedMethod === "upi") {
+                document.getElementById("upi-details").style.display = "block";
+            } else if (selectedMethod === "card") {
+                document.getElementById("card-details").style.display = "block";
+            }
+        });
+
+        // Handle form submission
+        document.getElementById("payment-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const paymentData = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                contact: document.getElementById("contact").value,
+                address: document.getElementById("address").value,
+                amount: document.getElementById("amount").value,
+                paymentMethod: document.getElementById("payment-method").value,
+                upi: document.getElementById("upi").value || null,
+                cardName: document.getElementById("cardName").value || null,
+                cardNumber: document.getElementById("cardNumber").value || null,
+                expiry: document.getElementById("expiry").value || null,
+                cvv: document.getElementById("cvv").value || null
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/pay', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(paymentData)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById('customerId').innerText = result.customerId;
+                    document.getElementById('totalAmount').innerText = paymentData.amount;
+                    document.getElementById('bill-section').style.display = 'block';
+                } else {
+                    alert(`Error: ${result.error}`);
+                }
+            } catch (error) {
+                alert('Payment failed. Try again.');
+            }
+        });
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(document.getElementById('customerId').innerText);
+            alert('Customer ID copied!');
+        }
+    </script>
+
+</body>
+</html>

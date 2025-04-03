@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dress Boutique</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+       
+
+        
+
+        /* Customize Button */
+        .customize-btn {
+            background: black;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .customize-btn:hover {
+            background: #333;
+        }
+
+        /* Hidden Form */
+        .customize-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid black;
+            width: 50%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .customize-form input,
+        .customize-form select,
+        .customize-form textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            background: black;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Customize Your Dress Button -->
+    <button class="customize-btn" onclick="showForm()">Customize Your Dress</button>
+
+    <!-- Customization Form -->
+    <div class="customize-form" id="customizeForm">
+        <h3>Customize Your Dress</h3>
+        <form>
+            <label for="dressType">Select Dress Type:</label>
+            <select id="dressType">
+                <option value="boys">Boys Wear</option>
+                <option value="girls">Girls Wear</option>
+                <option value="kids">Kids Wear</option>
+                <option value="group">Group Dresses</option>
+            </select>
+
+            <label for="color">Preferred Color:</label>
+            <input type="text" id="color" placeholder="Enter color">
+
+            <label for="size">Size:</label>
+            <input type="text" id="size" placeholder="Enter size (S, M, L, XL)">
+
+            <label for="fabric">Fabric Choice:</label>
+            <select id="fabric">
+                <option value="cotton">Cotton</option>
+                <option value="silk">Silk</option>
+                <option value="denim">Denim</option>
+                <option value="lycra">Lycra</option>
+            </select>
+
+            <label for="additionalNotes">Additional Requirements:</label>
+            <textarea id="additionalNotes" rows="3" placeholder="Enter any customization details..."></textarea>
+
+            <button type="submit" class="submit-btn">Submit Request</button>
+        </form>
+    </div>
+
+    <script>
+        function showForm() {
+            document.getElementById("customizeForm").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>About Us - Dress Boutique</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            text-align: center;
+        }
+
+        .top-heading {
+            background-color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin: 10px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        .top-heading h1 {
+            font-size: 2.5rem;
+            color: rgb(2, 88, 109);
+            font-weight: 1000;
+            font-family: 'Papyrus';
+        }
+
+        .category-card {
+            max-width: 350px;
+            height: 420px;
+            background: white;
+            color: black;
+            box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+            display: block;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Hidden Dress Customization Section */
+        .customize-section {
+            display: none;
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px solid black;
+            width: 50%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        .customize-section h3 {
+            text-align: center;
+        }
+
+        .customize-section input,
+        .customize-section select,
+        .customize-section textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            background: black;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #444;
+        }
+
+        /* Offers Section */
+        .offers {
+            padding: 20px 8%;
+            background: #f3f3f3;
+        }
+
+        .offer-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .offer-item {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            font-size: 1.2rem;
+            margin: 10px;
+        }
+
+        .offer-item i {
+            font-size: 40px;
+            color: #388b6f;
+            margin-right: 15px;
+        }
+
+        .offer-text {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Heading -->
+    <header class="top-heading mb-4">
+        <h1>Offered Materials</h1>
+    </header>
+
+    <!-- Materials Section -->
+    <section class="category-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="category-card" onclick="showCustomizeSection('Cotton')">
+                        <img src="cstm-ctn.jpg" alt="Cotton" class="card-img">
+                        <div class="card-content">
+                            <h4>Cotton Cloth</h4>
+                            <p>Breathable and comfortable fabric for all seasons.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <div class="category-card" onclick="showCustomizeSection('Lycra')">
+                        <img src="cstm-lycra.png" alt="Lycra" class="card-img">
+                        <div class="card-content">
+                            <h4>Lycra Cloth</h4>
+                            <p>Stretchable and form-fitting material for a stylish look.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <div class="category-card" onclick="showCustomizeSection('Jeans')">
+                        <img src="cstm-jean.jpg" alt="Jeans" class="card-img">
+                        <div class="card-content">
+                            <h4>Jeans Cloth</h4>
+                            <p>Durable denim wear for every occasion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <div class="category-card" onclick="showCustomizeSection('Silk')">
+                        <img src="cstm-silk.jpg" alt="Silk" class="card-img">
+                        <div class="card-content">
+                            <h4>Silk Cloth</h4>
+                            <p>Luxurious and elegant fabric for special moments.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section class="offers">
+        <div class="offer-content">
+            <div class="offer-item">
+                <i class="fas fa-truck-fast"></i>
+                <div class="offer-text">
+                    <strong>Free Delivery:</strong>
+                    <p>Free delivery at all times.</p>
+                </div>
+            </div>
+            <div class="offer-item">
+                <i class="fas fa-headset"></i>
+                <div class="offer-text">
+                    <strong>Support 24/7:</strong>
+                    <p>24-hour service available.</p>
+                </div>
+            </div>
+            <div class="offer-item">
+                <i class="fas fa-rotate-left"></i>
+                <div class="offer-text">
+                    <strong>10-Day Return:</strong>
+                    <p>Returns available.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

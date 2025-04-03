@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customized Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Customized Orders</h1>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Fabric Type</th>
+                    <th>Dress Type</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Additional Notes</th>
+                </tr>
+            </thead>
+            <tbody id="customizationRecords"></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchCustomizations() {
+            try {
+                const response = await fetch("http://localhost:5000/customizations");
+                const customizations = await response.json();
+                const customizationRecords = document.getElementById("customizationRecords");
+
+                customizations.forEach(customization => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${customization.fabricType}</td>
+                        <td>${customization.dressType}</td>
+                        <td>${customization.color}</td>
+                        <td>${customization.size}</td>
+                        <td>${customization.quantity}</td>
+                        <td>${customization.additionalNotes}</td>
+                    `;
+                    customizationRecords.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching customization records:", error);
+            }
+        }
+
+        // Fetch customizations when the page loads
+        window.onload = fetchCustomizations;
+    </script>
+</body>
+</html>

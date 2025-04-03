@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>E-commerce Website</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+    
+    <script>
+        // Check if user is authenticated and retrieve user ID
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "signin.html"; // Redirect to login if not authenticated
+            } else {
+                const userId = JSON.parse(atob(token.split('.')[1])).userId;
+                const userEmail = JSON.parse(atob(token.split('.')[1])).email; // Get user email
+                const firstLetter = userEmail.charAt(0).toUpperCase(); // Get the first letter of the email
+
+                console.log("User ID:", userId); // Log user ID
+                fetchUserData(userId);
+
+                // Logout function
+                document.getElementById("logout-btn").addEventListener("click", function () {
+                    localStorage.removeItem("token");
+                    window.location.href = "signin.html";
+                });
+            }
+        });
+
+        async function fetchUserData(userId) {
+            console.log("Fetching user data for user ID:", userId); // Log user ID being fetched
+            const response = await fetch(`/account/${userId}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Response from server:", data); // Log server response
+
+                // Display user-specific data here
+                const userRole = data.user.role; // Assuming user role is part of the user data
+                let userInterface;
+
+                if (userRole === 'admin') {
+                    userInterface = `
+                        <h2>Welcome, Admin ${data.user.username}!</h2>
+                        <p>You have access to admin features.</p>
+                    `;
+                } else {
+                    userInterface = `
+                    <h2>Welcome, ${firstLetter} ${data.user.username}!</h2>
+                    <p>You can view and manage your orders here.</p>
+                    `;
+                }
+
+                document.getElementById("userInfo").innerHTML = userInterface;
+            } else {
+                alert("Failed to load user data.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <br>
+    <!-- Navbar -->  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container shadow custom-shadow">
+        <nav class="navbar navbar-expand-sm">
+            <a class="navbar-brand" href="#">
+                <img src="cmp-logo3-removebg-preview.png" alt="logo" style="width:90px;">
+            </a>
+        </nav>
+        
+        <h1 style="color: #8c7000; font-weight: 1000; font-size: 40px; font-family: 'Papyrus', cursive;" class="mb-4">
+          AM Apparel and Textile
+        </h1>
+  
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse pt-4 p-3" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link" style="color: #727249" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" style="color: #727249" href="customize1.html">Customize</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" style="color: #727249" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" style="color: #727249" href="contact.html">Contact</a>
+              </li>
+              <li class="nav-item px-2">
+                <a class="nav-link" href="cart.html">
+                    <img src="cart3.png" alt="Cart" width="25" height="25">
+                </a>
+              </li>
+              <li class="nav-item px-1">
+                  <form class="d-flex">
+                      <div class="dropdown">
+                          <button class="btn border-0 p-0" type="button" data-bs-toggle="dropdown">
+                              <img src="acc-logo.png" alt="" class="rounded-circle img-fluid" width="40" height="40">
+                          </button>
+                          <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" style="color: #727249" href="signup.html">Create Account</a></li>
+                              <li><a class="dropdown-item" style="color: #727249" href="signin.html">Login</a></li>
+                              <li><a class="dropdown-item" style="color: #727249" id="logout-btn">Logout</a></li>
+
+
+
+                          </ul>
+                      </div>
+                  </form>
+              </li>
+          </ul>
+      </div>
+      </div>
+      </nav>
+  
+      <br>
+  
+      <section class="hero shadow shadow-info">
+          <div class="container text-center">
+              <div class="jumbotron">
+                  <h1 style="color: #e2e2b4;">"Your Dream Outfit Starts Here"</h1>
+                  <h3 style="color: #e2e2b4;">! Welcome to Our Fashion Hub !</h3>
+                  <h6 style="color: #e7e1a9;">Your gateway to amazing collections</h6>
+                  <a href="#products" class="btn btn-warning btn-lg">Explore Products</a>
+              </div>
+          </div>
+      </section>
+  
+      <div class="profile-area">
+          <div class="container">
+              <h3 id="products" style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Step into Fashion with Us</h3>
+          </div>
+          <div class="container">
+              <div class="row">
+                  <!-- Card 1 -->
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="img1">
+                              <img src="trd2.jpg" alt="">
+                          </div>
+                          <div class="img2">
+                              <img src="trd-logo1.png" alt="">
+                          </div>
+                          <div class="main-text">
+                              <h2>Traditional Outfit</h2>
+                              <center><p>From exclusive red carpet events to everyday fashion, Indian traditional clothing is making a mark globally.</p></center>
+                              <a href="traditional.html" class="btn btn-warning">View More</a>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Card 2 -->
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="img1">
+                              <img src="fml1.jpg" alt="">
+                          </div>
+                          <div class="img2">
+                              <img src="fml-logo1.png" alt="">
+                          </div>
+                          <div class="main-text">
+                              <h2>Formal Outfit</h2>
+                              <center><p>In this article, we’ll explore the various types of formal clothing on how to dress appropriately for any formal event.</p></center>
+                              <a href="formal.html" class="btn btn-warning">View More</a>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Card 3 -->
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="img1">
+                              <img src="cusl1.jpg" alt="">
+                          </div>
+                          <div class="img2">
+                              <img src="cusl1-logo.png" alt="">
+                          </div>
+                          <div class="main-text">
+                              <h2>Casual Outfit</h2>
+                              <center><p>Casual style is all about right balance between comfort and fashion. like jeans, t-shirts, sneakers, and lightweight layers.</p></center>
+                              <a href="casual.html" class="btn btn-warning">View More</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <section class="destinations1"></section>
+      <div class="container">
+          <h3 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Best Offers For a Week</h3>
+      </div>
+  
+      <br>
+  
+      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+          <div class="carousel-inner mb-4">
+              <div class="carousel-item active">
+                  <img src="off-trd-ban.jpg" class="d-block w-100">
+                  <div class="carousel-caption">
+                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Traditional Collections</h3>
+                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 12% Discount</h5>
+                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <img src="off-fml-ban.jpg" class="d-block w-100">
+                  <div class="carousel-caption">
+                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Formal Collections</h3>
+                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 20% Discount</h5>
+                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <img src="off-csl-ban.jpg" class="d-block w-100">
+                  <div class="carousel-caption">
+                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Casual Collections</h3>
+                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 25% Discount</h5>
+                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                  </div>
+              </div>
+          </div>
+          <button class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+          </button>
+          <div class="carousel-indicators">
+              <button data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></button>
+              <button data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
+              <button data-bs-target="#carouselExample" data-bs-slide-to="2"></button>
+          </div>
+      </div>
+      <!-- Bootstrap JS and dependencies -->
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

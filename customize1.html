@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections - Dress Boutique</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .top-heading {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    box-shadow: 6px 6px 15px rgb(131, 131, 131); /* Black shadow */
+    border-radius: 10px; /* Optional: Rounded edges for a sleek look */
+}
+
+
+        .top-heading img {
+            width: 120px;
+            height: 100px;
+            margin-right: 5px;
+        }
+
+        .top-heading h1 {
+            font-size: 2.5rem;
+            color: #000000;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+            margin: 0;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            font-weight: 1000;
+            font-family: 'Papyrus';
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            box-shadow: 6px 6px 20px rgba(153, 153, 153, 0.8); /* Darker shadow */
+            background-color: #ffffff; /* Black background */
+            color: white; /* White text */
+            min-height: 350px; /* Increased height */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 8px 8px 25px rgb(151, 151, 151); /* Stronger shadow on hover */
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px; /* Adjusted image height */
+            object-fit: cover;
+        }
+
+        .card-body {
+            text-align: center;
+            background-color: rgb(255, 255, 255); /* Black background */
+            color: rgb(0, 0, 0); /* White text */
+            padding: 15px;
+        }
+
+        .row {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Heading -->
+    <header class="top-heading border">
+        <img src="cstm-logo1.png" alt="Dress Boutique Logo">
+        <h1>Our Collections</h1>
+    </header>
+
+    <div class="container">
+        <!-- Row 1 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" onclick="navigateTo('customize2.html')">
+                    <img src="cstm-men.jpg" alt="Card Image 1">
+                    <div class="card-body">
+                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Men's Wear</h5>
+                        <p>Explore stylish and trendy outfits designed exclusively for men.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card" onclick="navigateTo('customize2.html')">
+                    <img src="cstm-women.jpg" alt="Card Image 2">
+                    <div class="card-body">
+                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Women's Wear</h5>
+                        <p>Discover elegant and fashionable clothing tailored for women.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" onclick="navigateTo('customize2.html')">
+                    <img src="cstm-kids.jpg" alt="Card Image 3">
+                    <div class="card-body">
+                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Kids' Wear</h5>
+                        <p>Adorable and comfortable outfits for children of all ages.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card" onclick="navigateTo('customize2.html')">
+                    <img src="cstm-grp.jpg" alt="Card Image 4">
+                    <div class="card-body">
+                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Group's Wear</h5>
+                        <p>Unique accessories to complement your stylish look.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to navigate to the specified page
+        function navigateTo(page) {
+
+            window.location.href = page;
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
