@@ -3,131 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collections - Dress Boutique</title>
+    <title>Collections - AM Apparel</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
     <style>
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #727249;
+            --accent-color: #e2e2b4;
+            --text-color: #2c2c2c;
+            --bg-gradient: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+        }
+
         body {
-            background-color: #ffffff;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .top-heading {
-    background-color: #ffffff;
-    padding: 10px 20px;
-    text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px;
-    box-shadow: 6px 6px 15px rgb(131, 131, 131); /* Black shadow */
-    border-radius: 10px; /* Optional: Rounded edges for a sleek look */
+            gap: 1.5rem;
+            transition: transform 0.3s ease;
 }
 
+        .top-heading:hover {
+            transform: translateY(-5px);
+        }
 
         .top-heading img {
-            width: 120px;
-            height: 100px;
-            margin-right: 5px;
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
         }
 
         .top-heading h1 {
             font-size: 2.5rem;
-            color: #000000;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+            color: var(--primary-color);
             margin: 0;
-            padding: 5px 10px;
+            font-weight: 800;
+            font-family: 'Papyrus', 'Segoe UI', cursive;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .collection-grid {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .collection-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: none;
+            position: relative;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .collection-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .collection-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .collection-card .card-body {
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9));
+        }
+
+        .collection-card .card-title {
+            color: var(--primary-color);
+            font-weight: 800;
+            font-family: 'Papyrus', 'Segoe UI', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .collection-card .card-text {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .collection-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .collection-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        @media (max-width: 768px) {
+            .top-heading {
+                flex-direction: column;
+                text-align: center;
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .top-heading h1 {
+                font-size: 2rem;
+            }
+
+            .collection-card {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #ffffff !important;
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            transform: scaleX(1);
+        }
+
+        .nav-wishlist {
+            position: relative;
+            display: inline-block;
+        }
+
+        .wishlist-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            font-weight: 1000;
-            font-family: 'Papyrus';
-        }
-
-        .container {
-            margin-top: 30px;
-        }
-
-        .card {
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s ease-in-out;
-            cursor: pointer;
-            box-shadow: 6px 6px 20px rgba(153, 153, 153, 0.8); /* Darker shadow */
-            background-color: #ffffff; /* Black background */
-            color: white; /* White text */
-            min-height: 350px; /* Increased height */
-        }
-
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 8px 8px 25px rgb(151, 151, 151); /* Stronger shadow on hover */
-        }
-
-        .card img {
-            width: 100%;
-            height: 250px; /* Adjusted image height */
-            object-fit: cover;
-        }
-
-        .card-body {
-            text-align: center;
-            background-color: rgb(255, 255, 255); /* Black background */
-            color: rgb(0, 0, 0); /* White text */
-            padding: 15px;
-        }
-
-        .row {
-            margin-bottom: 30px;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
+    <br>
+    <!-- Navbar -->  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container shadow custom-shadow">
+            <nav class="navbar navbar-expand-sm">
+                <a class="navbar-brand" href="#">
+                    <img src="cmp-logo3-removebg-preview.png" alt="logo" style="width:90px;">
+                </a>
+            </nav>
+            
+            <h1 style="color: #8c7000; font-weight: 1000; font-size: 40px; font-family: 'Papyrus', cursive;" class="mb-4">
+                AM Apparel and Textile
+            </h1>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse pt-4 p-3" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="code.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="customize1.html">Customize</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link nav-wishlist" href="wishlist.html">
+                            <i class="fas fa-heart" style="color: #727249; font-size: 1.4rem;"></i>
+                            <span class="wishlist-count" id="wishlistCount">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="cart.html">
+                            <img src="cart3.png" alt="Cart" width="25" height="25">
+                        </a>
+                    </li>
+                    <li class="nav-item px-1">
+                        <form class="d-flex">
+                            <div class="dropdown">
+                                <button class="btn border-0 p-0" type="button" data-bs-toggle="dropdown">
+                                    <div id="userInitial" class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px; font-weight: bold; background: #8C7A4D; color: white;">
+                                        <!-- Initial will be inserted here by JavaScript -->
+                                    </div>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" style="color: #727249" href="profile.html">My Profile</a></li>
+                                    <li><a class="dropdown-item" style="color: #727249" href="#" id="userEmailDisplay"></a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" style="color: #727249" id="logout-btn">Logout</a></li>
+                                </ul>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <br>
 
     <!-- Top Heading -->
-    <header class="top-heading border">
-        <img src="cstm-logo1.png" alt="Dress Boutique Logo">
+    <header class="top-heading">
+        <img src="cstm-logo1.png" alt="AM Apparel Logo">
         <h1>Our Collections</h1>
     </header>
 
-    <div class="container">
-        <!-- Row 1 -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card" onclick="navigateTo('customize2.html')">
-                    <img src="cstm-men.jpg" alt="Card Image 1">
+    <div class="collection-grid">
+        <div class="row g-4">
+            <!-- Men's Collection -->
+            <div class="col-lg-6 col-md-6">
+                <div class="collection-card" onclick="navigateTo('customize2.html')">
+                    <div class="overflow-hidden">
+                        <img src="cstm-men.jpg" alt="Men's Collection" class="img-fluid">
+                    </div>
                     <div class="card-body">
-                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Men's Wear</h5>
-                        <p>Explore stylish and trendy outfits designed exclusively for men.</p>
+                        <h5 class="card-title">Men's Collection</h5>
+                        <p class="card-text">Discover our premium collection of men's wear, featuring sophisticated designs and superior craftsmanship.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card" onclick="navigateTo('customize2.html')">
-                    <img src="cstm-women.jpg" alt="Card Image 2">
-                    <div class="card-body">
-                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Women's Wear</h5>
-                        <p>Discover elegant and fashionable clothing tailored for women.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Row 2 -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card" onclick="navigateTo('customize2.html')">
-                    <img src="cstm-kids.jpg" alt="Card Image 3">
+            <!-- Women's Collection -->
+            <div class="col-lg-6 col-md-6">
+                <div class="collection-card" onclick="navigateTo('customize2.html')">
+                    <div class="overflow-hidden">
+                        <img src="cstm-women.jpg" alt="Women's Collection" class="img-fluid">
+                    </div>
                     <div class="card-body">
-                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Kids' Wear</h5>
-                        <p>Adorable and comfortable outfits for children of all ages.</p>
+                        <h5 class="card-title">Women's Collection</h5>
+                        <p class="card-text">Explore our elegant women's wear collection, designed to make you feel confident and beautiful.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card" onclick="navigateTo('customize2.html')">
-                    <img src="cstm-grp.jpg" alt="Card Image 4">
+
+            <!-- Kids' Collection -->
+            <div class="col-lg-6 col-md-6">
+                <div class="collection-card" onclick="navigateTo('customize2.html')">
+                    <div class="overflow-hidden">
+                        <img src="cstm-kids.jpg" alt="Kids' Collection" class="img-fluid">
+        </div>
                     <div class="card-body">
-                        <h5 style=" font-weight: 1000; font-family: 'Papyrus'" class="card-title">Group's Wear</h5>
-                        <p>Unique accessories to complement your stylish look.</p>
+                        <h5 class="card-title">Kids' Collection</h5>
+                        <p class="card-text">Dress your little ones in comfort and style with our adorable kids' wear collection.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Group Collection -->
+            <div class="col-lg-6 col-md-6">
+                <div class="collection-card" onclick="navigateTo('customize2.html')">
+                    <div class="overflow-hidden">
+                        <img src="cstm-grp.jpg" alt="Group Collection" class="img-fluid">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Group Collection</h5>
+                        <p class="card-text">Create matching outfits for your group with our coordinated collection designs.</p>
                     </div>
                 </div>
             </div>
@@ -135,17 +343,62 @@
     </div>
 
     <script>
-        // Function to navigate to the specified page
-        function navigateTo(page) {
+        // Add authentication check
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "signin.html";
+                return;
+            }
 
+            try {
+                const decodedToken = JSON.parse(atob(token.split('.')[1]));
+                const userEmail = decodedToken.email;
+                const firstLetter = userEmail.charAt(0).toUpperCase();
+
+                // Set user initial and email
+                document.getElementById("userInitial").textContent = firstLetter;
+                document.getElementById("userEmailDisplay").textContent = userEmail;
+
+                // Logout handler
+                document.getElementById("logout-btn").addEventListener("click", function() {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userId");
+                    window.location.href = "signin.html";
+                });
+            } catch (error) {
+                console.error("Error processing token:", error);
+                localStorage.removeItem("token");
+                localStorage.removeItem("userId");
+                window.location.href = "signin.html";
+            }
+        });
+
+        // Your existing navigateTo function
+        function navigateTo(page) {
             window.location.href = page;
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update wishlist count
+            function updateWishlistCount() {
+                const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                document.getElementById('wishlistCount').textContent = wishlist.length;
+            }
+
+            // Initial update
+            updateWishlistCount();
+
+            // Listen for storage changes
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'wishlist') {
+                    updateWishlistCount();
+                }
+            });
+        });
     </script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

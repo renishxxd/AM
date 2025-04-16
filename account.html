@@ -18,11 +18,36 @@
         .section:hover {
             transform: scale(1.05);
         }
+        .notification-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .low-stock-alert {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-4">
         <h1 class="text-center mb-4">ADMIN DASHBOARD</h1>
+        
+        <!-- Low Stock Alerts Section -->
+        <div id="lowStockAlerts" class="mb-4">
+            <!-- Low stock notifications will be displayed here -->
+        </div>
+
         <div class="row g-4">
             <div class="col-md-6">
                 <a href="payment.html" class="text-decoration-none text-dark">
@@ -56,12 +81,87 @@
                     </div>
                 </a>
             </div>
+            <div class="col-md-6">
+                <a href="prod.html" class="text-decoration-none text-dark">
+                    <div class="section p-4">
+                        <h2>Edit products</h2>
+                        <p>Manage your Listed products.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="report.html" class="text-decoration-none text-dark">
+                    <div class="section p-4">
+                        <h2>Reports</h2>
+                        <p>View sales, orders, and customer analytics.</p>
+                    </div>
+                </a>
+            </div>
         </div>
         <div class="text-center mt-4">
             <button id="logout-btn" class="btn btn-danger">Logout</button>
         </div>
     </div>
     <script>
+        // Function to check for low stock items
+        function checkLowStock() {
+            const products = JSON.parse(localStorage.getItem('managedProducts')) || {
+                traditional: [],
+                formal: [],
+                casual: []
+            };
+
+            const lowStockItems = [];
+
+            // Check all categories
+            ['traditional', 'formal', 'casual'].forEach(category => {
+                products[category].forEach(product => {
+                    if (product.stock <= 5) {
+                        lowStockItems.push({
+                            name: product.name,
+                            stock: product.stock,
+                            category: category
+                        });
+                    }
+                });
+            });
+
+            // Display low stock alerts
+            const alertsContainer = document.getElementById('lowStockAlerts');
+            if (lowStockItems.length > 0) {
+                let alertsHtml = '<div class="alert alert-warning" role="alert">';
+                alertsHtml += '<h4 class="alert-heading">Low Stock Alert!</h4>';
+                alertsHtml += '<ul class="mb-0">';
+                lowStockItems.forEach(item => {
+                    alertsHtml += `<li>${item.name} (${item.category}): ${item.stock} items remaining</li>`;
+                });
+                alertsHtml += '</ul></div>';
+                alertsContainer.innerHTML = alertsHtml;
+
+                // Send email notification
+                fetch('/notify/low-stock-bulk', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        items: lowStockItems,
+                        email: 'renishsundar123@gmail.com'
+                    })
+                }).catch(console.error);
+            } else {
+                alertsContainer.innerHTML = '';
+            }
+        }
+
+        // Check low stock when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLowStock();
+            // Check every 5 minutes
+            setInterval(checkLowStock, 300000);
+        });
+
         document.getElementById("logout-btn").addEventListener("click", function () {
             localStorage.removeItem("token");
             window.location.href = "signin.html";

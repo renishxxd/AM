@@ -3,51 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Records</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Contact Records - AM Apparel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #727249;
+            --accent-color: #e2e2b4;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .contact-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-family: 'Papyrus', cursive;
+            font-weight: 1000;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead th {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(140, 112, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .contact-message {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                padding: 1rem;
+            }
+
+            .table-responsive {
+                border-radius: 15px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Contact Records</h1>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody id="contactRecords"></tbody>
-        </table>
+    <div class="container contact-container">
+        <h1 class="page-title">Contact Records</h1>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="contactRecords"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         async function fetchContacts() {
             try {
-                const response = await fetch("http://localhost:5000/contacts");
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
+                const response = await fetch("http://localhost:5000/all-contacts", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const contacts = await response.json();
                 const contactRecords = document.getElementById("contactRecords");
+                contactRecords.innerHTML = ''; // Clear existing records
+
+                if (contacts.length === 0) {
+                    contactRecords.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center">No contact records found</td>
+                        </tr>
+                    `;
+                    return;
+                }
 
                 contacts.forEach(contact => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${contact.fullName}</td>
-                        <td>${contact.email}</td>
-                        <td>${contact.phone}</td>
-                        <td>${contact.address}</td>
-                        <td>${contact.message}</td>
+                        <td>${contact.fullName || 'N/A'}</td>
+                        <td>${contact.email || 'N/A'}</td>
+                        <td>${contact.phone || 'N/A'}</td>
+                        <td>${contact.address || 'N/A'}</td>
+                        <td class="contact-message" title="${contact.message || ''}">${contact.message || 'N/A'}</td>
+                        <td class="contact-date">${contact.date ? new Date(contact.date).toLocaleString() : 'N/A'}</td>
                     `;
                     contactRecords.appendChild(row);
                 });
             } catch (error) {
                 console.error("Error fetching contact records:", error);
+                const contactRecords = document.getElementById("contactRecords");
+                contactRecords.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger">
+                            Error loading contact records. Please try again later.
+                        </td>
+                    </tr>
+                `;
             }
         }
 
-        // Fetch contacts when the page loads
-        window.onload = fetchContacts;
+        // Check authentication and fetch contacts when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'signin.html';
+                return;
+            }
+            fetchContacts();
+        });
     </script>
 </body>
 </html>

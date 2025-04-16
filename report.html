@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - AM Apparel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #727249;
+            --accent-color: #e2e2b4;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            min-height: 100vh;
+            padding: 2rem 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-title {
+            color: var(--primary-color);
+            font-family: 'Papyrus', cursive;
+            font-weight: 1000;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .report-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .report-card p {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn-download {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .table-responsive {
+            margin-top: 1rem;
+        }
+
+        .table th {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .analytics-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .analytics-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .analytics-label {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .product-sales-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .trend-up {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .trend-down {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="report-title">Sales Analytics Dashboard</h1>
+
+        <div class="filter-section">
+            <select id="timePeriod" class="form-select">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="year">This Year</option>
+                <option value="lastYear">Last Year</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadReports()">Apply Filter</button>
+        </div>
+
+        <!-- Sales Analytics Overview -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="analytics-card text-center">
+                    <div class="analytics-value" id="totalSales">₹0</div>
+                    <div class="analytics-label">Total Sales</div>
+                    <div class="trend-indicator" id="salesTrend">
+                        <i class="fas fa-arrow-up"></i> 0%
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="analytics-card text-center">
+                    <div class="analytics-value" id="totalOrders">0</div>
+                    <div class="analytics-label">Total Orders</div>
+                    <div class="trend-indicator" id="ordersTrend">
+                        <i class="fas fa-arrow-up"></i> 0%
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="analytics-card text-center">
+                    <div class="analytics-value" id="avgOrderValue">₹0</div>
+                    <div class="analytics-label">Average Order Value</div>
+                    <div class="trend-indicator" id="aovTrend">
+                        <i class="fas fa-arrow-up"></i> 0%
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="analytics-card text-center">
+                    <div class="analytics-value" id="topProduct">-</div>
+                    <div class="analytics-label">Top Selling Product</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly and Yearly Turnover -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="report-card">
+                    <h3>Monthly Turnover</h3>
+                    <div class="chart-container" id="monthlyTurnoverChart"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="report-card">
+                    <h3>Yearly Turnover</h3>
+                    <div class="chart-container" id="yearlyTurnoverChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product-wise Sales Analysis -->
+        <div class="report-card">
+            <h3>Product-wise Sales Analysis</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Image</th>
+                            <th>Category</th>
+                            <th>Total Sales</th>
+                            <th>Quantity Sold</th>
+                            <th>Revenue</th>
+                            <th>Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productSalesTable">
+                        <!-- Product sales data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sales Analysis -->
+        <div class="report-card">
+            <h3>Sales Analysis</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container" id="categorySalesChart"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-container" id="salesTrendChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Past Sales Records -->
+        <div class="report-card">
+            <h3>Past Sales Records</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
+                            <th>Payment Method</th>
+                            <th>Items</th>
+                            <th>Total Items</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pastSalesTable">
+                        <!-- Past sales data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'signin.html';
+                return;
+            }
+            loadReports();
+        });
+
+        async function loadReports() {
+            try {
+                const timePeriod = document.getElementById('timePeriod').value;
+                const token = localStorage.getItem('token');
+                
+                if (!token) {
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
+                const headers = new Headers({
+                    'Authorization': token.startsWith('Bearer ') ? token : `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                });
+
+                const fetchWithAuth = async (url) => {
+                    try {
+                        const response = await fetch(url, { 
+                            method: 'GET',
+                            headers: headers,
+                            credentials: 'include'
+                        });
+
+                        if (!response.ok) {
+                            if (response.status === 401) {
+                                localStorage.removeItem('token');
+                                window.location.href = 'signin.html';
+                                throw new Error('Authentication failed');
+                            }
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    } catch (error) {
+                        console.error('Fetch error:', error);
+                        throw error;
+                    }
+                };
+
+                // Clear existing charts before loading new data
+                clearCharts();
+
+                // Load all data in parallel
+                const [analyticsData, productSalesData, turnoverData, analysisData, pastSalesData] = await Promise.all([
+                    fetchWithAuth(`http://localhost:5000/reports/analytics?period=${timePeriod}`),
+                    fetchWithAuth(`http://localhost:5000/reports/product-sales?period=${timePeriod}`),
+                    fetchWithAuth(`http://localhost:5000/reports/turnover?period=${timePeriod}`),
+                    fetchWithAuth(`http://localhost:5000/reports/sales-analysis?period=${timePeriod}`),
+                    fetchWithAuth(`http://localhost:5000/reports/past-sales?period=${timePeriod}`)
+                ]);
+
+                // Update all sections
+                updateAnalytics(analyticsData);
+                updateProductSales(productSalesData);
+                updateTurnoverCharts(turnoverData);
+                updateSalesAnalysis(analysisData);
+                updatePastSales(pastSalesData);
+
+            } catch (error) {
+                console.error('Error loading reports:', error);
+                if (error.message.includes('Authentication failed')) {
+                    alert('Session expired. Please sign in again.');
+                    window.location.href = 'signin.html';
+                } else {
+                    alert(`Error loading reports: ${error.message}`);
+                }
+            }
+        }
+
+        function clearCharts() {
+            const chartIds = ['salesTrendChart', 'monthlyTurnoverChart', 'yearlyTurnoverChart', 'categorySalesChart'];
+            chartIds.forEach(id => {
+                const chartElement = document.getElementById(id);
+                const existingChart = Chart.getChart(chartElement);
+                if (existingChart) {
+                    existingChart.destroy();
+                }
+            });
+        }
+
+        function updateAnalytics(data) {
+            try {
+                document.getElementById('totalSales').textContent = `₹${Number(data.totalSales || 0).toFixed(2)}`;
+                document.getElementById('totalOrders').textContent = data.totalOrders || 0;
+                document.getElementById('avgOrderValue').textContent = `₹${Number(data.avgOrderValue || 0).toFixed(2)}`;
+                document.getElementById('topProduct').textContent = data.topProduct || '-';
+
+                // Update trends
+                updateTrendIndicator('salesTrend', data.salesTrend || 0);
+                updateTrendIndicator('ordersTrend', data.ordersTrend || 0);
+                updateTrendIndicator('aovTrend', data.aovTrend || 0);
+
+                // Clear existing chart if it exists
+                const chartElement = document.getElementById('salesTrendChart');
+                const existingChart = Chart.getChart(chartElement);
+                if (existingChart) {
+                    existingChart.destroy();
+                }
+
+                // Create new chart
+                const historicalCtx = chartElement.getContext('2d');
+                new Chart(historicalCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(data.historicalData || {}).reverse(),
+                        datasets: [{
+                            label: 'Historical Sales',
+                            data: Object.values(data.historicalData || {}).reverse(),
+                            borderColor: '#8c7000',
+                            tension: 0.1,
+                            fill: true,
+                            backgroundColor: 'rgba(140, 112, 0, 0.1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '12-Month Sales History'
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error updating analytics:', error);
+            }
+        }
+
+        function updateTrendIndicator(elementId, trend) {
+            const element = document.getElementById(elementId);
+            const icon = element.querySelector('i');
+            element.className = `trend-indicator ${trend > 0 ? 'trend-up' : 'trend-down'}`;
+            icon.className = `fas fa-arrow-${trend > 0 ? 'up' : 'down'}`;
+            element.innerHTML = `${icon.outerHTML} ${Math.abs(trend)}%`;
+        }
+
+        function updateProductSales(data) {
+            const tbody = document.getElementById('productSalesTable');
+            tbody.innerHTML = data.map(product => `
+                <tr>
+                    <td>${product.name}</td>
+                    <td><img src="${product.image}" class="product-image" alt="${product.name}"></td>
+                    <td>${product.category}</td>
+                    <td>${product.totalSales}</td>
+                    <td>${product.quantitySold}</td>
+                    <td>₹${product.revenue}</td>
+                    <td>
+                        <span class="trend-indicator ${product.trend > 0 ? 'trend-up' : 'trend-down'}">
+                            <i class="fas fa-arrow-${product.trend > 0 ? 'up' : 'down'}"></i>
+                            ${Math.abs(product.trend)}%
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateTurnoverCharts(data) {
+            try {
+                // Monthly Turnover Chart
+                const monthlyCtx = document.getElementById('monthlyTurnoverChart').getContext('2d');
+                const monthlyChart = new Chart(monthlyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.monthly.labels || [],
+                        datasets: [{
+                            label: 'Monthly Turnover',
+                            data: data.monthly.values || [],
+                            backgroundColor: '#8c7000',
+                            borderRadius: 6,
+                            maxBarThickness: 40
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Monthly Revenue',
+                                font: { size: 16 }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '₹' + context.parsed.y.toFixed(2);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Yearly Turnover Chart
+                const yearlyCtx = document.getElementById('yearlyTurnoverChart').getContext('2d');
+                const yearlyChart = new Chart(yearlyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.yearly.labels || [],
+                        datasets: [{
+                            label: 'Yearly Turnover',
+                            data: data.yearly.values || [],
+                            backgroundColor: '#727249',
+                            borderRadius: 6,
+                            maxBarThickness: 60
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Yearly Revenue',
+                                font: { size: 16 }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '₹' + context.parsed.y.toFixed(2);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error updating turnover charts:', error);
+            }
+        }
+
+        function updateSalesAnalysis(data) {
+            try {
+                // Category Sales Chart
+                const categoryCtx = document.getElementById('categorySalesChart').getContext('2d');
+                const categoryChart = new Chart(categoryCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.categories.labels || [],
+                        datasets: [{
+                            label: 'Category Sales',
+                            data: data.categories.values || [],
+                            backgroundColor: ['#8c7000', '#727249', '#e2e2b4', '#d4b483'],
+                            borderRadius: 6,
+                            maxBarThickness: 40
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Sales by Category',
+                                font: { size: 16 }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '₹' + context.parsed.y.toFixed(2);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Sales Trend Chart
+                const trendCtx = document.getElementById('salesTrendChart').getContext('2d');
+                const trendChart = new Chart(trendCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.trend.labels || [],
+                        datasets: [{
+                            label: 'Daily Sales',
+                            data: data.trend.values || [],
+                            backgroundColor: '#8c7000',
+                            borderRadius: 6,
+                            maxBarThickness: 20
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: '30-Day Sales Trend',
+                                font: { size: 16 }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '₹' + context.parsed.y.toFixed(2);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value.toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error updating sales analysis:', error);
+            }
+        }
+
+        function updatePastSales(data) {
+            const tbody = document.getElementById('pastSalesTable');
+            tbody.innerHTML = data.map(record => `
+                <tr>
+                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                    <td>${record.customerId}</td>
+                    <td>${record.customerName}</td>
+                    <td>${record.paymentMethod}</td>
+                    <td>
+                        <ul class="list-unstyled">
+                            ${record.items.map(item => `
+                                <li>${item.name} (${item.quantity} x ₹${item.price})</li>
+                            `).join('')}
+                        </ul>
+                    </td>
+                    <td>${record.totalItems}</td>
+                    <td>₹${record.amount}</td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 

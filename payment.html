@@ -3,57 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Records</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Payment Records - AM Apparel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #727249;
+            --accent-color: #e2e2b4;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .payment-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-family: 'Papyrus', cursive;
+            font-weight: 1000;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead th {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(140, 112, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .payment-amount {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .payment-date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-method i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .payment-container {
+                padding: 1rem;
+            }
+
+            .table-responsive {
+                border-radius: 15px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Payment Records</h1>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Customer ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact</th>
-                    <th>Address</th>
-                    <th>Payment Method</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody id="paymentRecords"></tbody>
-        </table>
+    <div class="container payment-container">
+        <h1 class="page-title">Payment Records</h1>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Payment Method</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentRecords"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         async function fetchPayments() {
             try {
-                const response = await fetch("http://localhost:5000/payments");
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
+                const response = await fetch("http://localhost:5000/all-payments", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const payments = await response.json();
                 const paymentRecords = document.getElementById("paymentRecords");
+                paymentRecords.innerHTML = ''; // Clear existing records
+
+                if (payments.length === 0) {
+                    paymentRecords.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center">No payment records found</td>
+                        </tr>
+                    `;
+                    return;
+                }
 
                 payments.forEach(payment => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${payment.customerId}</td>
-                        <td>${payment.name}</td>
-                        <td>${payment.email}</td>
-                        <td>${payment.contact}</td>
-                        <td>${payment.address}</td>
-                        <td>${payment.paymentMethod}</td>
-                        <td>${payment.amount}</td>
-                        <td>${new Date(payment.date).toLocaleString()}</td>
+                        <td>${payment.customerId || 'N/A'}</td>
+                        <td>${payment.name || 'N/A'}</td>
+                        <td>${payment.email || 'N/A'}</td>
+                        <td>${payment.contact || 'N/A'}</td>
+                        <td>${payment.address || 'N/A'}</td>
+                        <td class="payment-method">
+                            <i class="fas fa-credit-card"></i>
+                            ${payment.paymentMethod || 'N/A'}
+                        </td>
+                        <td class="payment-amount">₹${payment.amount || '0'}</td>
+                        <td class="payment-date">${payment.date ? new Date(payment.date).toLocaleString() : 'N/A'}</td>
                     `;
                     paymentRecords.appendChild(row);
                 });
             } catch (error) {
                 console.error("Error fetching payment records:", error);
+                const paymentRecords = document.getElementById("paymentRecords");
+                paymentRecords.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center text-danger">
+                            Error loading payment records. Please try again later.
+                            <br>
+                            <small>${error.message}</small>
+                        </td>
+                    </tr>
+                `;
             }
         }
 
-        // Fetch payments when the page loads
-        window.onload = fetchPayments;
+        // Check authentication and fetch payments when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'signin.html';
+                return;
+            }
+            fetchPayments();
+        });
     </script>
 </body>
 </html>

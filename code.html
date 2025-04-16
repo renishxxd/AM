@@ -4,6 +4,8 @@
     <title>E-commerce Website</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS -->
     <link href="styles.css" rel="stylesheet">
     
@@ -21,6 +23,15 @@
                 console.log("User ID:", userId); // Log user ID
                 fetchUserData(userId);
 
+                // Display user initial
+                const userInitial = localStorage.getItem("userInitial");
+                if (userInitial) {
+                    document.getElementById("userInitial").textContent = userInitial;
+                }
+                if (userEmail) {
+                    document.getElementById("userEmailDisplay").textContent = userEmail;
+                }
+
                 // Logout function
                 document.getElementById("logout-btn").addEventListener("click", function () {
                     localStorage.removeItem("token");
@@ -30,7 +41,8 @@
         });
 
         async function fetchUserData(userId) {
-            console.log("Fetching user data for user ID:", userId); // Log user ID being fetched
+            console.log("Fetching user data for user ID:", userId);
+            const token = localStorage.getItem("token");
             const response = await fetch(`/account/${userId}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -39,21 +51,89 @@
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Response from server:", data); // Log server response
+                console.log("Response from server:", data);
 
-                // Display user-specific data here
-                const userRole = data.user.role; // Assuming user role is part of the user data
-                let userInterface;
+                // Get user email and role
+                const userEmail = data.user.email;
+                const isAdmin = userEmail === 'admin@gmail.com';
+                const firstLetter = userEmail.charAt(0).toUpperCase();
 
-                if (userRole === 'admin') {
+                // Create user-specific interface
+                let userInterface = '';
+                
+                if (isAdmin) {
                     userInterface = `
-                        <h2>Welcome, Admin ${data.user.username}!</h2>
-                        <p>You have access to admin features.</p>
+                        <div class="admin-dashboard">
+                            <h2>Welcome, Admin ${data.user.username}!</h2>
+                            <div class="admin-controls mt-4">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card admin-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">User Management</h5>
+                                                <p class="card-text">Manage user accounts and permissions</p>
+                                                <a href="account.html" class="btn btn-primary">Manage Users</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card admin-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Order Management</h5>
+                                                <p class="card-text">View and manage all orders</p>
+                                                <a href="#" class="btn btn-primary">View Orders</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card admin-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Analytics</h5>
+                                                <p class="card-text">View sales and user analytics</p>
+                                                <a href="#" class="btn btn-primary">View Analytics</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     `;
                 } else {
                     userInterface = `
-                    <h2>Welcome, ${firstLetter} ${data.user.username}!</h2>
-                    <p>You can view and manage your orders here.</p>
+                        <div class="user-dashboard">
+                            <h2>Welcome, ${firstLetter} ${data.user.username}!</h2>
+                            <div class="user-controls mt-4">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card user-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">My Orders</h5>
+                                                <p class="card-text">Track your orders and view order history</p>
+                                                <a href="profile.html#orders" class="btn btn-primary">View Orders</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card user-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">My Customizations</h5>
+                                                <p class="card-text">View your customization requests</p>
+                                                <a href="profile.html#customizations" class="btn btn-primary">View Customizations</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card user-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">My Activities</h5>
+                                                <p class="card-text">View your recent activities</p>
+                                                <a href="profile.html#activities" class="btn btn-primary">View Activities</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     `;
                 }
 
@@ -63,6 +143,469 @@
             }
         }
     </script>
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background-color: #ffffff !important;
+        }
+        
+        .custom-shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(45deg, #8c7000, #727249);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            transform: scaleX(1);
+        }
+        
+        /* Admin Dashboard Styles */
+        .admin-dashboard {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .admin-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .admin-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .admin-card .btn-primary {
+            background: linear-gradient(45deg, #8c7000, #727249);
+            border: none;
+        }
+        
+        /* User Dashboard Styles */
+        .user-dashboard {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .user-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .user-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .user-card .btn-primary {
+            background: linear-gradient(45deg, #8c7000, #727249);
+            border: none;
+        }
+        
+        /* Profile Link Styles */
+        .nav-link[href="profile.html"] {
+            position: relative;
+        }
+        
+        .nav-link[href="profile.html"]:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(45deg, #8c7000, #727249);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-link[href="profile.html"]:hover:after {
+            transform: scaleX(1);
+        }
+
+        .carousel-indicators {
+            margin-bottom: 0;
+        }
+        
+        /* Featured Collection Styles */
+        .featured-collection {
+            margin: 60px 0;
+        }
+        
+        .featured-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .featured-image img {
+            transition: transform 0.6s ease;
+        }
+        
+        .featured-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .featured-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .featured-content h2 {
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .featured-content h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: #8c7000;
+        }
+        
+        .featured-content .btn:hover {
+            background-color: #727249 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .featured-collection .row {
+                flex-direction: column-reverse;
+            }
+            .featured-content {
+                padding: 40px 20px !important;
+            }
+            .featured-image img {
+                height: 400px !important;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #C5B358;
+            color: #000;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        footer h4 {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        footer ul li a {
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        footer ul li a:hover {
+            color: #727249 !important;
+        }
+
+        footer .newsletter-input {
+            background-color: transparent;
+            border: 1px solid #000;
+            color: #000;
+            padding: 10px 15px;
+        }
+
+        footer .newsletter-input::placeholder {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        footer .btn-dark {
+            background-color: #000;
+            border: none;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+
+        footer .btn-dark:hover {
+            background-color: #727249;
+            transform: translateY(-2px);
+        }
+
+        footer .social-links a {
+            transition: opacity 0.3s ease;
+        }
+
+        footer .social-links a:hover {
+            opacity: 0.7;
+        }
+
+        footer .service-feature {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        footer .service-feature img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 30px 0;
+            }
+            
+            footer h4 {
+                margin-top: 20px;
+            }
+            
+            footer .service-feature {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Chatbox Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(45deg, #8c7000, #727249);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-header .chat-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-header .chat-logo img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .chat-messages {
+            height: 380px;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            background: white;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #f8f8f8;
+            border-radius: 25px;
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-enter-btn {
+            background: none;
+            border: none;
+            color: #8c7000;
+            padding: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-enter-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-send {
+            background: linear-gradient(45deg, #8c7000, #727249);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .chat-send:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            z-index: 999;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .message {
+            margin-bottom: 10px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background: #f0f0f0;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background: #e2e2b4;
+            color: #2c2c2c;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .typing-indicator {
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #90909090;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .nav-wishlist {
+            position: relative;
+            display: inline-block;
+        }
+
+        .wishlist-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -98,6 +641,15 @@
               <li class="nav-item">
                   <a class="nav-link" style="color: #727249" href="contact.html">Contact</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link" style="color: #727249" href="profile.html">Profile</a>
+              </li>
+              <li class="nav-item px-2">
+                <a class="nav-link nav-wishlist" href="wishlist.html">
+                    <i class="fas fa-heart" style="color: #727249; font-size: 1.4rem;"></i>
+                    <span class="wishlist-count" id="wishlistCount">0</span>
+                </a>
+              </li>
               <li class="nav-item px-2">
                 <a class="nav-link" href="cart.html">
                     <img src="cart3.png" alt="Cart" width="25" height="25">
@@ -107,15 +659,15 @@
                   <form class="d-flex">
                       <div class="dropdown">
                           <button class="btn border-0 p-0" type="button" data-bs-toggle="dropdown">
-                              <img src="acc-logo.png" alt="" class="rounded-circle img-fluid" width="40" height="40">
+                              <div id="userInitial" class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px; font-weight: bold; background: #8C7A4D; color: white;">
+                                  <!-- Initial will be inserted here by JavaScript -->
+                              </div>
                           </button>
                           <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" style="color: #727249" href="signup.html">Create Account</a></li>
-                              <li><a class="dropdown-item" style="color: #727249" href="signin.html">Login</a></li>
+                              <li><a class="dropdown-item" style="color: #727249" href="profile.html">My Profile</a></li>
+                              <li><a class="dropdown-item" style="color: #727249" href="#" id="userEmailDisplay"></a></li>
+                              <li><hr class="dropdown-divider"></li>
                               <li><a class="dropdown-item" style="color: #727249" id="logout-btn">Logout</a></li>
-
-
-
                           </ul>
                       </div>
                   </form>
@@ -123,127 +675,432 @@
           </ul>
       </div>
       </div>
-      </nav>
+    </nav>
   
-      <br>
+    <br>
   
-      <section class="hero shadow shadow-info">
-          <div class="container text-center">
-              <div class="jumbotron">
-                  <h1 style="color: #e2e2b4;">"Your Dream Outfit Starts Here"</h1>
-                  <h3 style="color: #e2e2b4;">! Welcome to Our Fashion Hub !</h3>
-                  <h6 style="color: #e7e1a9;">Your gateway to amazing collections</h6>
-                  <a href="#products" class="btn btn-warning btn-lg">Explore Products</a>
-              </div>
-          </div>
-      </section>
+    <section class="hero shadow shadow-info">
+        <div class="container text-center">
+            <div class="jumbotron">
+                <h1 style="color: #e2e2b4;">"Your Dream Outfit Starts Here"</h1>
+                
+                <a href="#products" class="btn btn-warning btn-lg">Explore Products</a>
+            </div>
+        </div>
+    </section>
   
-      <div class="profile-area">
-          <div class="container">
-              <h3 id="products" style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Step into Fashion with Us</h3>
-          </div>
-          <div class="container">
-              <div class="row">
-                  <!-- Card 1 -->
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="img1">
-                              <img src="trd2.jpg" alt="">
-                          </div>
-                          <div class="img2">
-                              <img src="trd-logo1.png" alt="">
-                          </div>
-                          <div class="main-text">
-                              <h2>Traditional Outfit</h2>
-                              <center><p>From exclusive red carpet events to everyday fashion, Indian traditional clothing is making a mark globally.</p></center>
-                              <a href="traditional.html" class="btn btn-warning">View More</a>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Card 2 -->
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="img1">
-                              <img src="fml1.jpg" alt="">
-                          </div>
-                          <div class="img2">
-                              <img src="fml-logo1.png" alt="">
-                          </div>
-                          <div class="main-text">
-                              <h2>Formal Outfit</h2>
-                              <center><p>In this article, we’ll explore the various types of formal clothing on how to dress appropriately for any formal event.</p></center>
-                              <a href="formal.html" class="btn btn-warning">View More</a>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Card 3 -->
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="img1">
-                              <img src="cusl1.jpg" alt="">
-                          </div>
-                          <div class="img2">
-                              <img src="cusl1-logo.png" alt="">
-                          </div>
-                          <div class="main-text">
-                              <h2>Casual Outfit</h2>
-                              <center><p>Casual style is all about right balance between comfort and fashion. like jeans, t-shirts, sneakers, and lightweight layers.</p></center>
-                              <a href="casual.html" class="btn btn-warning">View More</a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+    <section class="featured-collection">
+        <div class="container-fluid p-0">
+            <div class="row g-0 equal-height">
+                <div class="col-md-6">
+                    <div class="featured-image h-100">
+                        <img src="trd-men3.jpg" alt="Featured Collection" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-center" style="background-color: #f8f8f8; min-height: 600px;">
+                    <div class="featured-content p-5">
+                        <h2 class="mb-4" style="color: #8c7000; font-size: 2.5rem; font-weight: bold; font-family: 'Papyrus', cursive;">
+                            Elevate Your Style
+                        </h2>
+                        <div class="divider mb-4" style="width: 60px; height: 3px; background-color: #8c7000;"></div>
+                        <p class="mb-4" style="color: #666; font-size: 1.2rem; line-height: 1.8; font-family: 'Helvetica Neue', Arial, sans-serif;">
+                            Discover our curated collection of premium apparel, where timeless elegance meets contemporary design. Each piece is thoughtfully crafted to reflect sophistication and refinement, ensuring you make a lasting impression.
+                        </p>
+                        <div class="offer-text mb-4" style="color: #8c7000; font-size: 1.1rem; font-weight: 500;">
+                            Special Offer: Up to 25% Off on Selected Items
+                        </div>
+                        <a href="#products" class="btn btn-lg px-5 py-3" 
+                           style="background-color: #8c7000; color: white; border: none; transition: all 0.3s ease; font-family: 'Helvetica Neue', Arial, sans-serif; letter-spacing: 1px;">
+                            EXPLORE COLLECTION
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
   
-      <section class="destinations1"></section>
-      <div class="container">
-          <h3 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Best Offers For a Week</h3>
-      </div>
+    <div class="profile-area">
+        <div class="container">
+            <h3 id="products" style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Step into Fashion with Us</h3>
+        </div>
+        <div class="container">
+            <div class="row">
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="img1">
+                            <img src="trd2.jpg" alt="">
+                        </div>
+                        <div class="img2">
+                            <img src="trd-logo1.png" alt="">
+                        </div>
+                        <div class="main-text">
+                            <h2>Traditional Outfit</h2>
+                            <center><p>From exclusive red carpet events to everyday fashion, Indian traditional clothing is making a mark globally.</p></center>
+                            <a href="traditional.html" class="btn btn-warning">View More</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="img1">
+                            <img src="fml1.jpg" alt="">
+                        </div>
+                        <div class="img2">
+                            <img src="fml-logo1.png" alt="">
+                        </div>
+                        <div class="main-text">
+                            <h2>Formal Outfit</h2>
+                            <center><p>In this article, we'll explore the various types of formal clothing on how to dress appropriately for any formal event.</p></center>
+                            <a href="formal.html" class="btn btn-warning">View More</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="img1">
+                            <img src="cusl1.jpg" alt="">
+                        </div>
+                        <div class="img2">
+                            <img src="cusl1-logo.png" alt="">
+                        </div>
+                        <div class="main-text">
+                            <h2>Casual Outfit</h2>
+                            <center><p>Casual style is all about right balance between comfort and fashion. like jeans, t-shirts, sneakers, and lightweight layers.</p></center>
+                            <a href="casual.html" class="btn btn-warning">View More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   
-      <br>
+    <section class="destinations1"></section>
+    <div class="container">
+        <h3 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Best Offers For a Week</h3>
+    </div>
   
-      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-          <div class="carousel-inner mb-4">
-              <div class="carousel-item active">
-                  <img src="off-trd-ban.jpg" class="d-block w-100">
-                  <div class="carousel-caption">
-                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Traditional Collections</h3>
-                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 12% Discount</h5>
-                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
-                  </div>
-              </div>
-              <div class="carousel-item">
-                  <img src="off-fml-ban.jpg" class="d-block w-100">
-                  <div class="carousel-caption">
-                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Formal Collections</h3>
-                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 20% Discount</h5>
-                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
-                  </div>
-              </div>
-              <div class="carousel-item">
-                  <img src="off-csl-ban.jpg" class="d-block w-100">
-                  <div class="carousel-caption">
-                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Casual Collections</h3>
-                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 25% Discount</h5>
-                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
-                  </div>
-              </div>
-          </div>
-          <button class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon"></span>
-          </button>
-          <button class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
-              <span class="carousel-control-next-icon"></span>
-          </button>
-          <div class="carousel-indicators">
-              <button data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></button>
-              <button data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
-              <button data-bs-target="#carouselExample" data-bs-slide-to="2"></button>
-          </div>
-      </div>
-      <!-- Bootstrap JS and dependencies -->
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <br>
+  
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner mb-4">
+            <div class="carousel-item active">
+                <img src="off-trd-ban.jpg" class="d-block w-100">
+                <div class="carousel-caption">
+                    <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Traditional Collections</h3>
+                    <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 12% Discount</h5>
+                    <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="off-fml-ban.jpg" class="d-block w-100">
+                <div class="carousel-caption">
+                    <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Formal Collections</h3>
+                    <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 20% Discount</h5>
+                    <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="off-csl-ban.jpg" class="d-block w-100">
+                <div class="carousel-caption">
+                    <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Casual Collections</h3>
+                    <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 25% Discount</h5>
+                    <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+        <div class="carousel-indicators">
+            <button data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></button>
+            <button data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
+            <button data-bs-target="#carouselExample" data-bs-slide-to="2"></button>
+        </div>
+    </div>
+    
+    <!-- User Info Section -->
+    <div id="userInfo" class="container mt-5"></div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <!-- Footer Section -->
+    <footer style="background-color: #C5B358; padding: 50px 0 20px; color: #000;">
+        <div class="container">
+            <!-- Newsletter Signup -->
+            <div class="text-center mb-5">
+                <h2 class="mb-3" style="font-family: 'Papyrus', cursive; font-size: 2.5rem;">Join AM Apparel Club</h2>
+                <p class="mb-4">Sign up to receive our newsletter and exclusive offers.</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your email address" 
+                                   style="background-color: transparent; border: 1px solid #000; color: #000;">
+                            <button class="btn btn-dark px-4" type="button">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="row mb-5">
+                <!-- Contact Us -->
+                <div class="col-md-3 mb-4">
+                    <h4 class="mb-4">Contact Us</h4>
+                    <p class="mb-2"><i class="bi bi-telephone-fill"></i> +91-9095059258</p>
+                    <p class="mb-2"><i class="bi bi-envelope-fill"></i> amappareltextile@gmail.com</p>
+                    <p class="mb-2"><i class="bi bi-geo-alt-fill"></i> 10, Nerhru nagar, Pallipalayam,<br>Erode, Tamilnadu, India</p>
+                </div>
+
+                <!-- About AM Apparel -->
+                <div class="col-md-3 mb-4">
+                    <h4 class="mb-4">About AM Apparel</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="about.html" class="text-dark text-decoration-none">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Investor Information</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Store Locator</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">In the News</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Blog</a></li>
+                        <li><a href="#" class="text-dark text-decoration-none">Site Map</a></li>
+                    </ul>
+                </div>
+
+                <!-- My Account -->
+                <div class="col-md-3 mb-4">
+                    <h4 class="mb-4">My Account</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="profile.html" class="text-dark text-decoration-none">My Profile</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Order</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Wishlist</a></li>
+                        <li><a href="#" class="text-dark text-decoration-none">Track Your Order</a></li>
+                    </ul>
+                </div>
+
+                <!-- Customer Support -->
+                <div class="col-md-3 mb-4">
+                    <h4 class="mb-4">Customer Support</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">FAQs</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-dark text-decoration-none">Contact</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Cancellation, Returns and Refunds</a></li>
+                        <li><a href="#" class="text-dark text-decoration-none">Terms and Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Service Features -->
+            <div class="row text-center mb-4">
+                <div class="col-md-4 mb-3">
+                    <img src="delivery-icon.png" alt="Delivery" style="width: 30px; margin-right: 10px;">
+                    <span>Free Delivery and Returns</span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <img src="refund-icon.png" alt="Refund" style="width: 30px; margin-right: 10px;">
+                    <span>Full Refunds</span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <img src="secure-icon.png" alt="Secure" style="width: 30px; margin-right: 10px;">
+                    <span>Secure payment</span>
+                </div>
+            </div>
+
+            <!-- Copyright and Social Links -->
+            <div class="row align-items-center">
+                <div class="col-md-6 text-md-start text-center mb-3 mb-md-0">
+                    <p class="mb-0">© 2025-AM Apparel / All rights reserved</p>
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <span class="me-3">Follow Us:</span>
+                    <a href="#" class="text-dark me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-dark me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-dark"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Chat Widget -->
+    <button class="chat-toggle" id="chatToggle">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <div class="chat-logo">
+                <img src="cmp-logo3-removebg-preview.png" alt="AM Apparel Logo">
+                <h4>AM Apparel Assistant</h4>
+            </div>
+            <button class="chat-close" id="chatClose" title="Close chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Hello! 👋 I'm AM Apparel's AI assistant. How can I help you today?
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <div class="chat-input-wrapper">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="chat-enter-btn" id="chatEnter" title="Press Enter to send">
+                    <i class="fas fa-keyboard"></i>
+                </button>
+                <button class="chat-send" id="chatSend" title="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Chatbox functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatToggle = document.getElementById('chatToggle');
+        const chatWidget = document.getElementById('chatWidget');
+        const chatClose = document.getElementById('chatClose');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatMessages = document.getElementById('chatMessages');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Toggle chat widget
+        chatToggle.addEventListener('click', () => {
+            chatWidget.style.display = chatWidget.style.display === 'none' ? 'block' : 'none';
+            if (chatWidget.style.display === 'block') {
+                chatInput.focus();
+            }
+        });
+
+        // Close chat widget
+        chatClose.addEventListener('click', () => {
+            chatWidget.style.display = 'none';
+        });
+
+        // Send message function
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+
+            // Show typing indicator
+            typingIndicator.style.display = 'block';
+
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Process the message and get response
+                const response = await processMessage(message);
+                
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+
+                // Add bot response
+                addMessage(response, 'bot');
+            } catch (error) {
+                console.error('Error:', error);
+                typingIndicator.style.display = 'none';
+                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            }
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', `${sender}-message`);
+            messageDiv.textContent = text;
+            chatMessages.insertBefore(messageDiv, typingIndicator);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Process message and get response
+        async function processMessage(message) {
+            // Simple response logic - you can replace this with actual API calls
+            const responses = {
+                'hello': 'Hi there! How can I assist you today?',
+                'hi': 'Hello! How may I help you?',
+                'help': 'I can help you with:\n- Product information\n- Current offers and discounts\n- Sizing guide\n- Order tracking\n- Returns and exchanges\nWhat would you like to know more about?',
+                'products': 'We offer a wide range of clothing including traditional, formal, and casual wear. Would you like to explore any specific category?',
+                'contact': 'You can reach us at:\nPhone: +91-9095059258\nEmail: amappareltextile@gmail.com\nAddress: 10, Nerhru nagar, Pallipalayam, Erode, Tamilnadu, India',
+                'price': 'Our prices vary by product. You can find detailed pricing information on each product page. Is there a specific item you\'re interested in?',
+                'delivery': 'We typically deliver within 5-7 business days. Express delivery options are also available.',
+                'return': 'We offer a 30-day return policy for unused items in original packaging. Would you like to know more about our return process?',
+                'offer': 'We have exciting discounts across all categories:\n- Traditional Wear: 15% OFF\n- Casual Wear: 20% OFF\n- Formal Wear: 25% OFF\nWhich collection would you like to explore?',
+                'offers': 'We have exciting discounts across all categories:\n- Traditional Wear: 15% OFF\n- Casual Wear: 20% OFF\n- Formal Wear: 25% OFF\nWhich collection would you like to explore?',
+                'discount': 'We have exciting discounts across all categories:\n- Traditional Wear: 15% OFF\n- Casual Wear: 20% OFF\n- Formal Wear: 25% OFF\nWhich collection would you like to explore?',
+                'traditional': 'Our Traditional Collection is currently offering 15% OFF on all items! Perfect for special occasions and cultural celebrations.',
+                'casual': 'Enjoy 20% OFF on our entire Casual Collection! Perfect for everyday comfort and style.',
+                'formal': 'Get 25% OFF on our premium Formal Collection! Ideal for professional and special occasions.'
+            };
+
+            const lowercaseMessage = message.toLowerCase();
+            let response = 'I\'m not sure about that. Can you please rephrase your question? You can ask me about our current offers, products, or specific collections.';
+
+            // Check for keyword matches
+            for (const [key, value] of Object.entries(responses)) {
+                if (lowercaseMessage.includes(key)) {
+                    response = value;
+                    break;
+                }
+            }
+
+            return response;
+        }
+
+        // Send message on button click
+        chatSend.addEventListener('click', sendMessage);
+
+        // Add enter button tooltip functionality
+        const chatEnter = document.getElementById('chatEnter');
+        chatEnter.addEventListener('click', () => {
+            chatInput.focus();
+        });
+
+        // Update the keypress event to show visual feedback
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                chatEnter.style.transform = 'scale(1.1)';
+                sendMessage();
+                setTimeout(() => {
+                    chatEnter.style.transform = 'scale(1)';
+                }, 200);
+            }
+        });
+
+        // Update wishlist count
+        function updateWishlistCount() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            document.getElementById('wishlistCount').textContent = wishlist.length;
+        }
+
+        // Initial update
+        updateWishlistCount();
+
+        // Listen for storage changes
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'wishlist') {
+                updateWishlistCount();
+            }
+        });
+    });
+    </script>
 </body>
 </html>

@@ -3,9 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Product Cards</title>
+    <title>Traditional Collections - AM Apparel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: #8c7000;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #727249;
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            color: #727249;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: #8c7000;
+            transform: translateY(-2px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-initial {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(45deg, #8c7000, #727249);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
         .card {
             height: 400px; /* Reduce card height */
             transition: transform .3s, box-shadow .3s;
@@ -33,25 +84,25 @@
             font-family: 'Papyrus';
         }
         
-/* Custom Button Styles */
-.btn-cart {
-    background-color: #d4a017; /* Custom golden color */
-    border: none;
-    color: white;
-    font-size: 14px; /* Slightly larger font */
-    padding: 8px 15px; /* Increase padding for better clickability */
-    width: 120px; /* Wider button */
-    border-radius: 5px; /* Slightly rounded corners */
-    display: block; /* Makes it a block element */
-    margin: 10px auto; /* Centers the button horizontally */
-    transition: background-color 0.3s ease, transform 0.2s;
-}
-.btn-cart:hover {
-    background-color: #b3860b; /* Darker shade on hover */
-    transform: scale(1.05); /* Slight hover effect */
-}
+        /* Custom Button Styles */
+        .btn-cart {
+            background-color: #d4a017; /* Custom golden color */
+            border: none;
+            color: white;
+            font-size: 14px; /* Slightly larger font */
+            padding: 8px 15px; /* Increase padding for better clickability */
+            width: 120px; /* Wider button */
+            border-radius: 5px; /* Slightly rounded corners */
+            display: block; /* Makes it a block element */
+            margin: 10px auto; /* Centers the button horizontally */
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+        .btn-cart:hover {
+            background-color: #b3860b; /* Darker shade on hover */
+            transform: scale(1.05); /* Slight hover effect */
+        }
 
-.btn-more-details {
+        .btn-more-details {
             background-color: #ff8c00; /* New custom color */
             border: none;
             color: white;
@@ -65,138 +116,161 @@
             transform: scale(1.05);
         }
         .cart-popup {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    display: none;
-    font-size: 16px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-}
-.cart-popup.show {
-    display: block;
-}
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            font-size: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .cart-popup.show {
+            display: block;
+        }
 
+        .wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
 
+        .wishlist-btn i {
+            color: #727249;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-btn:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .wishlist-btn.active i {
+            color: #ff4444;
+        }
+
+        .wishlist-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-wishlist {
+            position: relative;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container shadow custom-shadow">
+            <nav class="navbar navbar-expand-sm">
+                <a class="navbar-brand" href="#">
+                    <img src="cmp-logo3-removebg-preview.png" alt="logo" style="width:90px;">
+                </a>
+            </nav>
+            
+            <h1 style="color: #8c7000; font-weight: 1000; font-size: 40px; font-family: 'Papyrus', cursive;" class="mb-4">
+                AM Apparel and Textile
+            </h1>
 
-<div class="container mt-5 text-center">
-    <h2 class="mb-5 p-3 text-center border shadow" style="color: #8c7000;">Traditional Collections</h2>
-    
-    <h4 class="title-box mb-0">Outfits For Men</h4>
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="trd-men1.jpg" class="img-thumbnail" alt="Shrwani">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Shrwani</h5>
-                    <p class="card-text"><strong>Price: $299.99</strong></p>
-                    <button class="btn btn-cart btn-sm" onclick="addToCart(1, 'Shrwani', 299.99, 'trd-men1.jpg')">Add to Cart</button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse pt-4 p-3" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="code.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="customize1.html">Customize</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #727249" href="profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link nav-wishlist" href="wishlist.html">
+                            <i class="fas fa-heart" style="color: #727249; font-size: 1.4rem;"></i>
+                            <span class="wishlist-count" id="wishlistCount">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="cart.html">
+                            <img src="cart3.png" alt="Cart" width="25" height="25">
+                        </a>
+                    </li>
+                    <li class="nav-item px-1">
+                        <form class="d-flex">
+                            <div class="dropdown">
+                                <button class="btn border-0 p-0" type="button" data-bs-toggle="dropdown">
+                                    <div id="userInitial" class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px; font-weight: bold; background: #8C7A4D; color: white;">
+                                        <!-- Initial will be inserted here by JavaScript -->
+                                    </div>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" style="color: #727249" href="profile.html">My Profile</a></li>
+                                    <li><a class="dropdown-item" style="color: #727249" href="#" id="userEmailDisplay"></a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" style="color: #727249" id="logout-btn">Logout</a></li>
+                                </ul>
                 </div>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
+    <br>
 
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="trd-men2.png" class="card-img-top img-thumbnail" alt="Vesti and Shirt">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Vesti and Shirt</h5>
-                    <p class="card-text"><strong>Price: $349.99</strong></p>
-                    <button class="btn btn-cart btn-sm" onclick="addToCart(2, 'Vesti and Shirt', 349.99, 'trd-men2.png')">Add to Cart</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="trd-men3.jpg" class="card-img-top img-thumbnail" alt="Kurta">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Kurta</h5>
-                    <p class="card-text"><strong>Price: $199.99</strong></p>
-                    <button class="btn btn-cart btn-sm" onclick="addToCart(3, 'Kurta', 199.99, 'trd-men3.jpg')">Add to Cart</button>
-                </div>
-            </div>
-        </div>
+    <div class="container mt-5 text-center">
+        <h2 class="mb-5 p-3 text-center border shadow" style="color: #8c7000;">Traditional Collections</h2>
+        
+        <h4 class="title-box mb-0">Outfits For Men</h4>
+        <div class="row" id="traditional-men-products">
+            <!-- Products will be loaded dynamically -->
     </div>
 
 <h4 class="title-box mb-0">Outfits For Women</h4>
-<div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="trd-women1.jpg" class="img-thumbnail" alt="Sarees">
-            <div class="card-body text-center">
-                <h5 class="card-title">Sarees</h5>
-                <p class="card-text"><strong>Price: $299.99</strong></p>
-                <button class="btn btn-cart btn-sm" onclick="addToCart(4, 'Sarees', 299.99, 'trd-women1.jpg')">Add to Cart</button>
-            </div>
+        <div class="row" id="traditional-women-products">
+            <!-- Products will be loaded dynamically -->
         </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="trd-women2.jpg" class="card-img-top img-thumbnail" alt="Salwar Kameez">
-            <div class="card-body text-center">
-                <h5 class="card-title">Salwar Kameez</h5>
-                <p class="card-text"><strong>Price: $349.99</strong></p>
-                <button class="btn btn-cart btn-sm" onclick="addToCart(5, 'Salwar Kameez', 349.99, 'trd-women2.jpg')">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="trd-women3.jpg" class="card-img-top img-thumbnail" alt="Anarkali Suit">
-            <div class="card-body text-center">
-                <h5 class="card-title">Anarkali Suit</h5>
-                <p class="card-text"><strong>Price: $199.99</strong></p>
-                <button class="btn btn-cart btn-sm" onclick="addToCart(6, 'Anarkali Suit', 199.99, 'trd-women3.jpg')">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <h4 class="title-box mb-0">Outfits For Kids</h4>
-<div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="trd-kid1.jpg" class="img-thumbnail" alt="Top And Lehenga With Dupatta">
-            <div class="card-body text-center">
-                <h5 class="card-title">Top And Lehenga With Dupatta</h5>
-                <p class="card-text"><strong>Price: $299.99</strong></p>
-                <button class="btn btn-cart btn-sm" onclick="addToCart(7, 'Top And Lehenga With Dupatta', 299.99, 'trd-kid1.jpg')">Add to Cart</button>
-            </div>
+        <div class="row" id="traditional-kids-products">
+            <!-- Products will be loaded dynamically -->
         </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="trd-kid2.jpg" class="card-img-top img-thumbnail" alt="Jacket And Pyjama">
-            <div class="card-body text-center">
-                <h5 class="card-title">Jacket And Pyjama</h5>
-                <p class="card-text"><strong>Price: $349.99</strong></p>
-                <button class="btn btn-cart btn-sm" onclick="addToCart(8, 'Jacket And Pyjama', 349.99, 'trd-kid2.jpg')">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="trd-kid3.jpg" class="card-img-top img-thumbnail" alt="Tuxedo And Bow">
-            <div class="card-body text-center">
-                <h5 class="card-title">Tuxedo And Bow</h5>
-                <p class="card-text"><strong>Price: $199.99</strong></p>
-                <button class="btn btn-cart btn-sm" onclick="addToCart(9, 'Tuxedo And Bow', 199.99, 'trd-kid3.jpg')">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
     <div class="text-center mt-2 mb-4">
         <h4 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'"> 
@@ -207,31 +281,395 @@
 
 <div id="cart-popup" class="cart-popup"></div>
 
+    <script>
+        // Function to load products from localStorage
+        function loadProducts() {
+            // Get products from localStorage
+            const products = JSON.parse(localStorage.getItem('managedProducts')) || {
+                traditional: [],
+                formal: [],
+                casual: []
+            };
+            
+            // Initialize stock if not present
+            products.traditional.forEach(product => {
+                if (typeof product.stock === 'undefined') {
+                    product.stock = 25; // Set default stock
+                }
+            });
+            
+            localStorage.setItem('managedProducts', JSON.stringify(products));
+            
+            // Filter traditional products by type
+            const menProducts = products.traditional.filter(product => product.type === 'men');
+            const womenProducts = products.traditional.filter(product => product.type === 'women');
+            const kidsProducts = products.traditional.filter(product => product.type === 'kids');
+            
+            // Render products
+            renderProducts('traditional-men-products', menProducts);
+            renderProducts('traditional-women-products', womenProducts);
+            renderProducts('traditional-kids-products', kidsProducts);
+        }
+        
+        // Function to render products
+        function renderProducts(containerId, products) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (products.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center"><p>No products available in this category.</p></div>';
+                return;
+            }
+            
+            products.forEach(product => {
+                const isWishlisted = checkIfWishlisted(product.id);
+                const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" 
+                                    onclick="toggleWishlist(${product.id}, '${product.name}', ${product.price}, '${product.image}')">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <img src="${product.image}" class="img-thumbnail" alt="${product.name}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text"><strong>Price: ₹${product.price}</strong></p>
+                                <button class="btn btn-cart btn-sm" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image}')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += productCard;
+            });
+        }
+
+        // Load products when page loads
+        document.addEventListener('DOMContentLoaded', loadProducts);
+
+        async function addToCart(id, name, price, img) {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("Please sign in to add items to cart");
+                window.location.href = "signin.html";
+                return;
+            }
+
+            try {
+                // Check stock before adding
+                const products = JSON.parse(localStorage.getItem('managedProducts'));
+                const product = products.traditional.find(p => p.id === id);
+                
+                if (!product) {
+                    throw new Error('Product not found');
+                }
+
+                if (product.stock <= 0) {
+                    alert('Sorry, this item is out of stock!');
+                    return;
+                }
+
+                // First, add to server cart
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ 
+                        id, 
+                        name, 
+                        price, 
+                        quantity: 1, 
+                        img 
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Update stock
+                    product.stock -= 1;
+                    localStorage.setItem('managedProducts', JSON.stringify(products));
+
+                    // Check if stock is low
+                    if (product.stock <= 5) {
+                        // Send notification to server
+                        await fetch('/notify/low-stock', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                productId: id,
+                                productName: name,
+                                currentStock: product.stock,
+                                email: 'renishsundar123@gmail.com'
+                            })
+                        });
+                    }
+
+                    // Update local cart
+                    let localCart = JSON.parse(localStorage.getItem("cart")) || [];
+                    const existingItemIndex = localCart.findIndex(item => item.id === id);
+                    
+                    if (existingItemIndex !== -1) {
+                        localCart[existingItemIndex].quantity += 1;
+                    } else {
+                        localCart.push({
+                            id: id,
+                            name: name,
+                            price: price,
+                            quantity: 1,
+                            img: img
+                        });
+                    }
+                    
+                    localStorage.setItem("cart", JSON.stringify(localCart));
+                    
+                    let popup = document.getElementById("cart-popup");
+                    popup.innerHTML = `<strong>${name}</strong> has been added to your cart!`;
+                    popup.classList.add("show");
+
+                    setTimeout(() => {
+                        popup.classList.remove("show");
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Failed to add item to cart');
+                }
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                alert(error.message || 'An error occurred while adding to cart');
+            }
+        }
+
+        async function removeFromCart(id) {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("Please sign in to manage your cart");
+                window.location.href = "signin.html";
+                return;
+            }
+
+            try {
+                console.log("Removing from cart:", id);
+                console.log("Using token:", token);
+
+                const response = await fetch('/cart/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ id })
+                });
+
+                console.log("Response status:", response.status);
+                const data = await response.json();
+                console.log("Response data:", data);
+                
+                if (response.ok) {
+                    // Show popup
+                    let popup = document.getElementById("cart-popup");
+                    popup.innerHTML = "Item removed from cart!";
+                    popup.classList.add("show");
+
+                    setTimeout(() => {
+                        popup.classList.remove("show");
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Failed to remove item from cart');
+                }
+            } catch (error) {
+                console.error("Error removing from cart:", error);
+                alert(error.message || 'An error occurred while removing from cart');
+            }
+        }
+
+        // Function to load cart items
+        async function loadCartItems() {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            try {
+                console.log("Loading cart items with token:", token);
+
+                const response = await fetch('/cart', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log("Response status:", response.status);
+                const data = await response.json();
+                console.log("Cart data:", data);
+                
+                if (response.ok && data.cart) {
+                    // Update cart count in UI if needed
+                    const cartCount = data.cart.items.reduce((total, item) => total + item.quantity, 0);
+                    console.log("Cart count:", cartCount);
+                    // You can update a cart counter element here if you have one
+                }
+            } catch (error) {
+                console.error('Error loading cart:', error);
+            }
+        }
+
+        // Load cart items when page loads
+        document.addEventListener('DOMContentLoaded', loadCartItems);
+    </script>
 
     <script>
-       function addToCart(id, name, price, img) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let item = cart.find(p => p.id === id);
+        // Authentication Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!token || !userEmail) {
+                window.location.href = 'signin.html';
+                return;
+            }
 
-    if (item) {
-        item.quantity += 1;
-    } else {
-        cart.push({ id, name, price, quantity: 1, img });
-    }
+            // Set user initial and email in the dropdown
+            const initial = userEmail.charAt(0).toUpperCase();
+            document.getElementById('userInitial').textContent = initial;
+            document.getElementById('userEmailDisplay').textContent = userEmail;
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+            // Handle logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'signin.html';
+            });
+        });
+    </script>
 
-    // Show popup with product name
-    let popup = document.getElementById("cart-popup");
-    popup.innerHTML = `<strong>${name}</strong> has been added to your cart!`;
-    popup.classList.add("show");
+    <script>
+        // Add these functions at the end of your script section
+        function checkIfWishlisted(productId) {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            return wishlist.some(item => item.id === productId);
+        }
 
-    setTimeout(() => {
-        popup.classList.remove("show");
-    }, 2000); // Hide popup after 2 seconds
-}
+        async function toggleWishlist(id, name, price, img) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please sign in to add items to your wishlist');
+                window.location.href = 'signin.html';
+                return;
+            }
 
+            const wishlistBtn = document.querySelector(`.wishlist-btn[onclick*="${id}"]`);
+            const isWishlisted = wishlistBtn.classList.contains('active');
 
+            try {
+                if (isWishlisted) {
+                    // Remove from wishlist
+                    const response = await fetch('/wishlist/remove', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ id })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to remove from wishlist');
+                    }
+
+                    wishlistBtn.classList.remove('active');
+                    wishlistBtn.innerHTML = '<i class="far fa-heart"></i>';
+                    showPopup(`${name} removed from wishlist`);
+                } else {
+                    // Add to wishlist
+                    const response = await fetch('/wishlist/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ 
+                            id, 
+                            name, 
+                            price, 
+                            img, 
+                            category: 'traditional' // Set the category explicitly
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to add to wishlist');
+                    }
+
+                    wishlistBtn.classList.add('active');
+                    wishlistBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    showPopup(`${name} added to wishlist`);
+                }
+
+                // Update wishlist count by fetching current wishlist
+                const wishlistResponse = await fetch('/wishlist', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (wishlistResponse.ok) {
+                    const data = await wishlistResponse.json();
+                    document.getElementById('wishlistCount').textContent = data.wishlist.length;
+                }
+
+            } catch (error) {
+                console.error('Error toggling wishlist:', error);
+                showPopup('Failed to update wishlist. Please try again.');
+            }
+        }
+
+        function updateWishlistCount() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const count = wishlist.length;
+            const countElement = document.getElementById('wishlistCount');
+            countElement.textContent = count;
+            countElement.style.display = count > 0 ? 'flex' : 'none';
+        }
+
+        function showPopup(message) {
+            let popup = document.getElementById("cart-popup");
+            popup.innerHTML = message;
+            popup.classList.add("show");
+
+            setTimeout(() => {
+                popup.classList.remove("show");
+            }, 2000);
+        }
+
+        // Add this to your DOMContentLoaded event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing code ...
+            updateWishlistCount();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing code ...
+
+            // Update wishlist count
+            function updateWishlistCount() {
+                const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                document.getElementById('wishlistCount').textContent = wishlist.length;
+            }
+
+            // Initial update
+            updateWishlistCount();
+
+            // Listen for storage changes
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'wishlist') {
+                    updateWishlistCount();
+                }
+            });
+        });
     </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

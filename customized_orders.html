@@ -5,51 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customized Orders</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .table th {
+            background-color: #8c7000;
+            color: white;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+        .user-info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Customized Orders</h1>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th>Fabric Type</th>
-                    <th>Dress Type</th>
-                    <th>Color</th>
-                    <th>Size</th>
-                    <th>Quantity</th>
-                    <th>Additional Notes</th>
-                </tr>
-            </thead>
-            <tbody id="customizationRecords"></tbody>
-        </table>
+        <h1 class="mt-5 mb-4">Customized Orders</h1>
+        <div id="loadingMessage" class="loading">Loading customization orders...</div>
+        <div class="table-responsive" id="tableContainer" style="display: none;">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>User Information</th>
+                        <th>Fabric Type</th>
+                        <th>Dress Type</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Phone Number</th>
+                        <th>Additional Notes</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="customizationRecords"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         async function fetchCustomizations() {
             try {
-                const response = await fetch("http://localhost:5000/customizations");
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
+                const response = await fetch("http://localhost:5000/customizations", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const customizations = await response.json();
                 const customizationRecords = document.getElementById("customizationRecords");
+                const loadingMessage = document.getElementById("loadingMessage");
+                const tableContainer = document.getElementById("tableContainer");
+
+                // Clear existing records
+                customizationRecords.innerHTML = '';
+
+                if (!customizations || customizations.length === 0) {
+                    loadingMessage.innerHTML = 'No customization orders found';
+                    return;
+                }
+
+                // Hide loading message and show table
+                loadingMessage.style.display = 'none';
+                tableContainer.style.display = 'block';
 
                 customizations.forEach(customization => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${customization.fabricType}</td>
-                        <td>${customization.dressType}</td>
-                        <td>${customization.color}</td>
-                        <td>${customization.size}</td>
-                        <td>${customization.quantity}</td>
-                        <td>${customization.additionalNotes}</td>
+                        <td>
+                            <div class="user-info">
+                                <strong>Username:</strong> ${customization.username || 'N/A'}<br>
+                                <strong>Email:</strong> ${customization.userEmail || 'N/A'}<br>
+                                <strong>Phone:</strong> ${customization.phone || 'N/A'}
+                            </div>
+                        </td>
+                        <td>${customization.fabricType || 'N/A'}</td>
+                        <td>${customization.dressType || 'N/A'}</td>
+                        <td>${customization.color || 'N/A'}</td>
+                        <td>${customization.size || 'N/A'}</td>
+                        <td>${customization.quantity || 'N/A'}</td>
+                        <td>${customization.phone || 'N/A'}</td>
+                        <td>${customization.additionalNotes || 'None'}</td>
+                        <td>${customization.date ? new Date(customization.date).toLocaleDateString() : 'N/A'}</td>
                     `;
                     customizationRecords.appendChild(row);
                 });
             } catch (error) {
-                console.error("Error fetching customization records:", error);
+                const loadingMessage = document.getElementById("loadingMessage");
+                loadingMessage.innerHTML = `Error loading customization orders: ${error.message}`;
+                loadingMessage.style.color = 'red';
             }
         }
 
-        // Fetch customizations when the page loads
-        window.onload = fetchCustomizations;
+        // Check authentication and fetch customizations when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'signin.html';
+                return;
+            }
+            fetchCustomizations();
+        });
     </script>
 </body>
 </html>

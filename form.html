@@ -3,102 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Payment Form</title>
+    <title>Payment Form - AM Apparel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #727249;
+            --accent-color: #e2e2b4;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 2rem 0;
             font-family: 'Poppins', sans-serif;
         }
+
         .container {
-            max-width: 600px;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        h3 {
+
+        .form-title {
+            color: var(--primary-color);
+            font-family: 'Papyrus', cursive;
+            font-weight: 1000;
             text-align: center;
-            color: #2a5298;
-            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .form-label {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
         .form-control {
+            border: 2px solid #e9ecef;
             border-radius: 10px;
-            border: 1px solid #ddd;
+            padding: 0.8rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            font-weight: bold;
-            transition: all 0.3s ease-in-out;
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(140, 112, 0, 0.25);
+            background: white;
         }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2a5298, #1e3c72);
-            transform: scale(1.05);
-        }
-        .bill {
-            display: none;
+
+        .form-control:disabled {
             background: #f8f9fa;
-            padding: 20px;
-            margin-top: 20px;
+            cursor: not-allowed;
+        }
+
+        .payment-method-select {
+            background: white;
+            border: 2px solid #e9ecef;
             border-radius: 10px;
-            text-align: center;
+            padding: 0.8rem;
+            width: 100%;
+            transition: all 0.3s ease;
         }
-        .bill h4 {
-            color: #2a5298;
+
+        .payment-method-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(140, 112, 0, 0.25);
         }
-        .copy-btn {
-            cursor: pointer;
-            background: #1e3c72;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: none;
-        }
-        .copy-btn:hover {
-            background: #2a5298;
-        }
+
         .payment-details {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 1rem;
+            border: 1px solid rgba(140, 112, 0, 0.2);
             display: none;
+        }
+
+        .payment-details.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .bill-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .bill-section.active {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bill-title {
+            color: var(--success-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .bill-details {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .bill-details strong {
+            color: var(--primary-color);
+        }
+
+        .copy-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .card-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .card-col {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .card-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .card-col {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-initial {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .custom-shadow {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h3>User Payment Details</h3>
+        <h3 class="form-title">Payment Details</h3>
 
         <form id="payment-form">
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Full Name</label>
                 <input type="text" id="name" class="form-control" required>
             </div>
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Email</label>
                 <input type="email" id="email" class="form-control" required>
             </div>
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Contact Number</label>
                 <input type="tel" id="contact" class="form-control" required>
             </div>
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Billing Address</label>
                 <input type="text" id="address" class="form-control" required>
             </div>
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Total Amount (₹)</label>
                 <input type="text" id="amount" class="form-control" readonly>
             </div>
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Payment Method</label>
-                <select class="form-control" id="payment-method" required>
+                <select class="payment-method-select" id="payment-method" required>
                     <option value="">Select Payment Method</option>
                     <option value="upi">UPI</option>
                     <option value="card">Credit/Debit Card</option>
@@ -107,41 +291,49 @@
             </div>
 
             <div id="upi-details" class="payment-details">
-                <label class="form-label">UPI Address</label>
-                <input type="text" id="upi" class="form-control">
+                <div class="form-group">
+                    <label class="form-label">UPI Address</label>
+                    <input type="text" id="upi" class="form-control" placeholder="Enter UPI ID">
+                </div>
             </div>
 
             <div id="card-details" class="payment-details">
-                <label class="form-label">Cardholder Name</label>
-                <input type="text" id="cardName" class="form-control">
-                <label class="form-label">Card Number</label>
-                <input type="text" id="cardNumber" class="form-control">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
+                <div class="form-group">
+                    <label class="form-label">Cardholder Name</label>
+                    <input type="text" id="cardName" class="form-control" placeholder="Enter cardholder name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Card Number</label>
+                    <input type="text" id="cardNumber" class="form-control" placeholder="Enter card number">
+                </div>
+                <div class="card-row">
+                    <div class="card-col">
                         <label class="form-label">Expiry Date</label>
-                        <input type="text" id="expiry" class="form-control">
+                        <input type="text" id="expiry" class="form-control" placeholder="MM/YY">
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="card-col">
                         <label class="form-label">CVV</label>
-                        <input type="text" id="cvv" class="form-control">
+                        <input type="text" id="cvv" class="form-control" placeholder="Enter CVV">
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit Payment</button>
-
+            <button type="submit" class="btn-submit">Submit Payment</button>
         </form>
 
-        <div class="bill" id="bill-section">
-            <h4>Payment Successful</h4>
-            <p><strong>Customer ID:</strong> <span id="customerId"></span></p>
-            <p><strong>Total Amount Paid:</strong> ₹<span id="totalAmount"></span></p>
-            <button class="copy-btn" onclick="copyToClipboard()">Copy ID</button>
+        <div class="bill-section" id="bill-section">
+            <h4 class="bill-title">Payment Successful</h4>
+            <div class="bill-details">
+                <p><strong>Customer ID:</strong> <span id="customerId"></span></p>
+                <p><strong>Total Amount Paid:</strong> ₹<span id="totalAmount"></span></p>
+            </div>
+            <button class="copy-btn" onclick="copyToClipboard()">
+                <i class="fas fa-copy"></i> Copy ID
+            </button>
         </div>
     </div>
 
     <script>
-        // Load total amount from localStorage
         document.addEventListener("DOMContentLoaded", function () {
             let storedAmount = localStorage.getItem("totalAmount");
             if (storedAmount) {
@@ -149,18 +341,18 @@
             }
         });
 
-        // Show payment fields based on selection
         document.getElementById("payment-method").addEventListener("change", function () {
-            document.querySelectorAll(".payment-details").forEach(el => el.style.display = "none");
+            document.querySelectorAll(".payment-details").forEach(el => {
+                el.classList.remove("active");
+            });
             let selectedMethod = this.value;
             if (selectedMethod === "upi") {
-                document.getElementById("upi-details").style.display = "block";
+                document.getElementById("upi-details").classList.add("active");
             } else if (selectedMethod === "card") {
-                document.getElementById("card-details").style.display = "block";
+                document.getElementById("card-details").classList.add("active");
             }
         });
 
-        // Handle form submission
         document.getElementById("payment-form").addEventListener("submit", async function(event) {
             event.preventDefault();
             
@@ -179,29 +371,90 @@
             };
 
             try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please sign in to make a payment');
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
                 const response = await fetch('http://localhost:5000/pay', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: JSON.stringify(paymentData)
                 });
                 const result = await response.json();
                 if (response.ok) {
-                    document.getElementById('customerId').innerText = result.customerId;
-                    document.getElementById('totalAmount').innerText = paymentData.amount;
-                    document.getElementById('bill-section').style.display = 'block';
+                    // Store payment data in localStorage
+                    const paymentDataToStore = {
+                        name: document.getElementById("name").value,
+                        email: document.getElementById("email").value,
+                        contact: document.getElementById("contact").value,
+                        address: document.getElementById("address").value,
+                        amount: document.getElementById("amount").value,
+                        paymentMethod: document.getElementById("payment-method").value,
+                        upi: document.getElementById("upi").value || null,
+                        cardName: document.getElementById("cardName").value || null,
+                        cardNumber: document.getElementById("cardNumber").value || null,
+                        customerId: result.customerId
+                    };
+                    localStorage.setItem('paymentData', JSON.stringify(paymentDataToStore));
+                    
+                    // Clear the cart after successful payment
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('totalAmount');
+                    
+                    // Show success message
+                    document.getElementById('customerId').textContent = result.customerId;
+                    document.getElementById('totalAmount').textContent = document.getElementById("amount").value;
+                    document.getElementById('bill-section').classList.add('active');
+                    
+                    // Redirect to bill page after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'bill.html';
+                    }, 3000);
                 } else {
                     alert(`Error: ${result.error}`);
                 }
             } catch (error) {
-                alert('Payment failed. Try again.');
+                alert('Payment failed. Please try again.');
             }
         });
 
         function copyToClipboard() {
             navigator.clipboard.writeText(document.getElementById('customerId').innerText);
-            alert('Customer ID copied!');
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy ID';
+            }, 2000);
         }
-    </script>
 
+        // Authentication Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!token || !userEmail) {
+                window.location.href = 'signin.html';
+                return;
+            }
+
+            // Set user initial and email in the dropdown
+            const initial = userEmail.charAt(0).toUpperCase();
+            document.getElementById('userInitial').textContent = initial;
+            document.getElementById('userEmailDisplay').textContent = userEmail;
+
+            // Handle logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'signin.html';
+            });
+        });
+    </script>
 </body>
 </html>
