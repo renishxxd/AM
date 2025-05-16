@@ -9,20 +9,89 @@
     <style>
         :root {
             --primary-color: #8c7000;
-            --secondary-color: #727249;
+            --secondary-color: #b39b4a;
             --accent-color: #e2e2b4;
             --text-color: #2c2c2c;
-            --bg-gradient: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
+            --bg-gradient: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(179, 155, 74, 0.1));
         }
 
         body {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('contact-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #fff;
+            background: var(--bg-gradient);
             min-height: 100vh;
+            color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(140, 112, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            color: #8c7000;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #b39b4a;
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            color: #8c7000;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: #b39b4a;
+            transform: translateY(-2px);
+        }
+
+        .contact-header h1 {
+            color: #8c7000;
+            text-shadow: 2px 2px 4px rgba(140, 112, 0, 0.2);
+        }
+
+        .contact-section {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(140, 112, 0, 0.1);
+        }
+
+        .contact-info h2 {
+            color: #8c7000;
+        }
+
+        .contact-info h2::after {
+            background: linear-gradient(45deg, #8c7000, #b39b4a);
+        }
+
+        .contact-details li i {
+            color: #8c7000;
+        }
+
+        .contact-details li a:hover {
+            color: #b39b4a;
+        }
+
+        .form-control:focus {
+            border-color: #8c7000;
+            box-shadow: 0 0 0 0.2rem rgba(140, 112, 0, 0.25);
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
+            box-shadow: 0 5px 15px rgba(140, 112, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(135deg, #b39b4a 0%, #8c7000 100%);
+            box-shadow: 0 8px 20px rgba(140, 112, 0, 0.3);
         }
 
         /* Navbar Styles */
@@ -43,11 +112,6 @@
             transform: scale(1.05);
         }
 
-        .nav-link {
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
         .nav-link:after {
             content: '';
             position: absolute;
@@ -55,7 +119,7 @@
             height: 2px;
             bottom: 0;
             left: 0;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(45deg, #8c7000, #b39b4a);
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
@@ -159,31 +223,6 @@
             transition: all 0.3s ease;
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(140, 112, 0, 0.25);
-        }
-
-        .btn-custom {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
-        }
-
-        .btn-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            color: white;
-        }
-
         .alert {
             border-radius: 10px;
             padding: 1rem;
@@ -269,8 +308,7 @@
                     </li>
                     <li class="nav-item px-2">
                         <a class="nav-link nav-wishlist" href="wishlist.html">
-                            <i class="fas fa-heart" style="color: #727249; font-size: 1.4rem;"></i>
-                            <span class="wishlist-count" id="wishlistCount">0</span>
+                            <i class="fas fa-heart" style="color: #8c7000; font-size: 1.4rem;"></i>
                         </a>
                     </li>
                     <li class="nav-item px-2">
@@ -311,7 +349,7 @@
             <div class="col-md-6">
                 <div class="contact-info">
                     <h2>Get In <span style="color: var(--primary-color);">Touch</span></h2>
-                    <p><strong>For more information, fill out the form or contact us directly.</strong></p>
+                <p><strong>For more information, fill out the form or contact us directly.</strong></p>
                     <ul class="contact-details">
                         <li>
                             <i class="fas fa-phone"></i>
@@ -325,35 +363,35 @@
                             <i class="fas fa-map-marker-alt"></i>
                             <span>10, Nerhru nagar, Pallipalayam, Erode, Tamilnadu, India</span>
                         </li>
-                    </ul>
+                </ul>
                 </div>
             </div>            
             <div class="col-md-6">
                 <div class="contact-form">
-                    <form id="contactForm">
+                <form id="contactForm">
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" id="fullName" class="form-control" placeholder="Full Name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" id="email" class="form-control" placeholder="Email Address" required>
-                            </div>
+                        <div class="col-md-6">
+                            <input type="text" id="fullName" class="form-control" placeholder="Full Name" required>
                         </div>
+                        <div class="col-md-6">
+                            <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+                        </div>
+                    </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="tel" id="phone" class="form-control" placeholder="Phone Number" required pattern="\d{10}" title="Phone number must be 10 digits">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" id="address" class="form-control" placeholder="Your Address" required>
-                            </div>
+                        <div class="col-md-6">
+                            <input type="tel" id="phone" class="form-control" placeholder="Phone Number" required pattern="\d{10}" title="Phone number must be 10 digits">
                         </div>
-                        <div class="mb-3">
-                            <textarea id="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                        <div class="col-md-6">
+                            <input type="text" id="address" class="form-control" placeholder="Your Address" required>
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <textarea id="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                    </div>
                         <button type="submit" class="btn btn-custom">Send Message</button>
-                    </form>
+                </form>
 
-                    <!-- Alert Box -->
+                <!-- Alert Box -->
                     <div id="alertMessage" class="alert d-none"></div>
                 </div>
             </div>
@@ -384,12 +422,12 @@
 
             try {
                 const response = await fetch("http://localhost:5000/send-email", {
-                    method: "POST",
-                    headers: {
+                method: "POST",
+                headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify(formData)
+                },
+                body: JSON.stringify(formData)
                 });
 
                 if (!response.ok) {

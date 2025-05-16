@@ -7,72 +7,319 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/admin.css">
     <style>
+        html,body{
+            height: 100%;
+            overflow-y: auto;
+        }
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #b39b4a;
+            --accent-color: #d4af37;
+            --text-color: #333;
+            --light-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(140, 112, 0, 0.1);
+        }
+
         .profile-container {
             min-height: 100vh;
-            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
-            padding: 2rem 0;
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.05), rgba(114, 114, 73, 0.05));
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('pattern.png') repeat;
+            opacity: 0.03;
+            z-index: -1;
         }
         
         .profile-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--light-bg);
             backdrop-filter: blur(10px);
             border: none;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px var(--shadow-color);
+            overflow: auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow-color);
         }
         
         .profile-header {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 3rem 2rem;
             color: white;
             text-align: center;
+            position: relative;
+            overflow: auto;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            z-index: 1;
         }
         
         .profile-picture {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 5px solid white;
-            margin-bottom: 1rem;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .profile-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        .profile-header #memberSince {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-style: italic;
         }
         
         .activity-item {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-            transition: background-color 0.3s;
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            background: var(--light-bg);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
         }
         
         .activity-item:hover {
-            background-color: #f8f9fa;
+            background-color: rgba(140, 112, 0, 0.03);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            margin-right: 1rem;
+            color: white;
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+
+        .activity-icon i {
+            font-size: 1.3rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-content p {
+            margin-bottom: 0.25rem;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .activity-content small {
+            color: #6c757d;
+            font-size: 0.9rem;
         }
         
         .order-card {
-            margin-bottom: 1rem;
-            transition: transform 0.3s;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            background: var(--light-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow-color);
         }
         
         .order-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-color);
         }
         
         .tab-content {
-            padding: 2rem;
+            padding: 2.5rem;
+        }
+        
+        .nav-tabs {
+            border: none;
+            background: var(--light-bg);
+            padding: 0;
+            margin: 0;
         }
         
         .nav-tabs .nav-link {
             color: var(--primary-color);
             border: none;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2rem;
             font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: auto;
+        }
+        
+        .nav-tabs .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-tabs .nav-link:hover::before {
+            transform: scaleX(1);
         }
         
         .nav-tabs .nav-link.active {
             color: white;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
             border-radius: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state .text-muted {
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 15px;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, #28a745, #20c997) !important;
+        }
+
+        .badge.bg-warning {
+            background: linear-gradient(135deg, #ffc107, #ff9800) !important;
+        }
+
+        .table {
+            background: var(--light-bg);
+            border-radius: 15px;
+            overflow: auto;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .table tfoot td {
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 2rem 0;
+            }
+
+            .profile-picture {
+                width: 150px;
+                height: 150px;
+            }
+
+            .profile-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -80,10 +327,10 @@
     <div class="container">
         <div class="profile-card">
             <div class="profile-header">
-                <img id="profilePicture" src="default-avatar.png" alt="Profile Picture" class="profile-picture">
+                <img id="profilePicture" src="default-profile.png" alt="Profile Picture" class="profile-picture">
                 <h2 id="username">Loading...</h2>
                 <p id="email">Loading...</p>
-                <p id="joinDate">Member since: Loading...</p>
+                <p id="memberSince" class="text-white-50">Member since: Loading...</p>
             </div>
             
             <ul class="nav nav-tabs" id="profileTabs" role="tablist">
@@ -101,21 +348,21 @@
             <div class="tab-content" id="profileTabContent">
                 <div class="tab-pane fade show active" id="orders" role="tabpanel">
                     <h3>Order History</h3>
-                    <div id="ordersList" class="row">
+                    <div id="ordersContainer">
                         <!-- Orders will be populated here -->
                     </div>
                 </div>
                 
                 <div class="tab-pane fade" id="activities" role="tabpanel">
                     <h3>Recent Activities</h3>
-                    <div id="activitiesList">
+                    <div id="activitiesContainer">
                         <!-- Activities will be populated here -->
                     </div>
                 </div>
                 
                 <div class="tab-pane fade" id="customizations" role="tabpanel">
                     <h3>Customization Requests</h3>
-                    <div id="customizationsList">
+                    <div id="customizationsContainer">
                         <!-- Customizations will be populated here -->
                     </div>
                 </div>
@@ -125,27 +372,52 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Function to format date
+        // Format currency in INR
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR'
+            }).format(amount);
+        }
+
+        // Format date
         function formatDate(dateString) {
-            return new Date(dateString).toLocaleDateString('en-US', {
+            return new Date(dateString).toLocaleDateString('en-IN', {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
         }
 
-        // Function to load profile data
-        async function loadProfileData() {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-            
-            if (!token || !userId) {
-                window.location.href = 'signin.html';
-                return;
-            }
+        // Function to update status badges in real-time
+        function updateStatusBadge(type, id, newStatus) {
+            const elements = document.querySelectorAll(`[data-${type}-id="${id}"]`);
+            elements.forEach(element => {
+                element.textContent = newStatus;
+                element.className = `badge ${newStatus.toLowerCase() === 'completed' ? 'bg-success' : 'bg-warning'}`;
+            });
+        }
 
+        // Listen for status updates from other pages
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'statusUpdate') {
+                const update = JSON.parse(e.newValue);
+                updateStatusBadge(update.type, update.id, update.status);
+            }
+        });
+
+        async function loadProfileData() {
             try {
-                const response = await fetch(`/profile/${userId}`, {
+                const userId = localStorage.getItem('userId');
+                if (!userId) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:5000/profile/${userId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -157,178 +429,205 @@
 
                 const data = await response.json();
                 
-                // Update profile information
+                // Update user info
                 document.getElementById('username').textContent = data.user.username;
                 document.getElementById('email').textContent = data.user.email;
-                document.getElementById('joinDate').textContent = `Member since: ${formatDate(data.user.joinedDate)}`;
-                document.getElementById('profilePicture').src = data.user.profilePicture;
+                if (data.user.profilePicture) {
+                    document.getElementById('profilePicture').src = data.user.profilePicture;
+                }
+                if (data.user.createdAt) {
+                    const memberSince = new Date(data.user.createdAt).toLocaleDateString('en-IN', {
+                        year: 'numeric',
+                        month: 'long'
+                    });
+                    document.getElementById('memberSince').textContent = `Member since: ${memberSince}`;
+                }
 
-                // Populate orders
-                const ordersList = document.getElementById('ordersList');
-                if (!data.orders || data.orders.length === 0) {
-                    ordersList.innerHTML = `
-                        <div class="col-12">
-                            <div class="alert alert-info text-center">
-                                <i class="fas fa-shopping-bag mb-2" style="font-size: 2rem;"></i>
-                                <p class="mb-0">No orders found. Start shopping to see your orders here!</p>
+                // Update orders section
+                const ordersContainer = document.getElementById('ordersContainer');
+                if (data.orders && data.orders.length > 0) {
+                    const ordersHtml = data.orders.map(order => `
+                        <div class="order-card mb-4 p-4 border rounded">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Order ID: ${order._id}</h5>
+                                <span class="badge ${order.payment.status === 'completed' ? 'bg-success' : 'bg-warning'}" 
+                                      data-payment-id="${order.payment.customerId}">
+                                    ${order.payment.status}
+                                </span>
                             </div>
-                        </div>
-                    `;
-                } else {
-                    ordersList.innerHTML = data.orders.map(order => `
-                        <div class="col-12 mb-4">
-                            <div class="card order-card">
-                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title mb-0">Order #${order._id.slice(-6)}</h5>
-                                    <span class="badge bg-${getStatusColor(order.status)}">${order.status}</span>
+                            <div class="order-details">
+                                <p><strong>Date:</strong> ${formatDate(order.createdAt)}</p>
+                                <p><strong>Payment Method:</strong> ${order.payment.paymentMethod}</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>GST (18%)</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${order.items.map(item => {
+                                                const itemTotal = item.price * item.quantity;
+                                                const gst = itemTotal * 0.18;
+                                                const totalWithGst = itemTotal + gst;
+                                                return `
+                                                    <tr>
+                                                        <td>${item.name}</td>
+                                                        <td>${item.quantity}</td>
+                                                        <td>${formatCurrency(item.price)}</td>
+                                                        <td>${formatCurrency(gst)}</td>
+                                                        <td>${formatCurrency(totalWithGst)}</td>
+                                                    </tr>
+                                                `;
+                                            }).join('')}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td><strong>Subtotal:</strong></td>
+                                                <td colspan="2">${formatCurrency(order.subtotal || 0)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td><strong>GST (18%):</strong></td>
+                                                <td colspan="2">${formatCurrency((order.subtotal || 0) * 0.18)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td><strong>Total:</strong></td>
+                                                <td colspan="2">${formatCurrency((order.subtotal || 0) * 1.18)}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h6 class="mb-3">Order Information</h6>
-                                            <p class="mb-2"><strong>Date:</strong> ${formatDate(order.orderDate)}</p>
-                                            <p class="mb-2"><strong>Payment ID:</strong> ${order.paymentId || 'N/A'}</p>
-                                            <p class="mb-2"><strong>Payment Method:</strong> ${order.paymentMethod}</p>
-                                            <p class="mb-2"><strong>Total Amount:</strong> ₹${order.totalAmount.toFixed(2)}</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h6 class="mb-3">Shipping Details</h6>
-                                            <p class="mb-2"><strong>Name:</strong> ${order.shippingDetails?.name || data.user.username}</p>
-                                            <p class="mb-2"><strong>Email:</strong> ${data.user.email}</p>
-                                            <p class="mb-2"><strong>Address:</strong> ${order.shippingDetails?.address || 'Not provided'}</p>
-                                            <p class="mb-2"><strong>Phone:</strong> ${order.shippingDetails?.phone || 'Not provided'}</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <h6 class="mb-3">Order Items</h6>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>Item</th>
-                                                        <th>Name</th>
-                                                        <th>Price</th>
-                                                        <th>Quantity</th>
-                                                        <th>Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    ${order.items.map(item => `
-                                                        <tr>
-                                                            <td>
-                                                                <img src="${item.img}" alt="${item.name}" 
-                                                                    style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                                                            </td>
-                                                            <td>${item.name}</td>
-                                                            <td>₹${parseFloat(item.price).toFixed(2)}</td>
-                                                            <td>${item.quantity}</td>
-                                                            <td>₹${(item.price * item.quantity).toFixed(2)}</td>
-                                                        </tr>
-                                                    `).join('')}
-                                                </tbody>
-                                                <tfoot class="table-light">
-                                                    <tr>
-                                                        <td colspan="4" class="text-end"><strong>Total Amount:</strong></td>
-                                                        <td><strong>₹${order.totalAmount.toFixed(2)}</strong></td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-3 d-flex justify-content-end gap-2">
-                                        <button class="btn btn-outline-primary btn-sm" onclick="viewOrderDetails('${order._id}')">
-                                            <i class="fas fa-eye"></i> View Details
-                                        </button>
-                                        <a href="bill.html?orderId=${order._id}" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-file-invoice"></i> View Bill
-                                        </a>
-                                    </div>
+                                <div class="mt-3 d-flex justify-content-end">
+                                    <button class="btn btn-primary" onclick="viewBill('${order._id}', ${JSON.stringify(order).replace(/"/g, '&quot;')})">
+                                        <i class="fas fa-file-invoice"></i> View Bill
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     `).join('');
+                    ordersContainer.innerHTML = ordersHtml;
+                } else {
+                    ordersContainer.innerHTML = `
+                        <div class="text-center p-4">
+                            <p>No orders found. Start shopping to see your orders here!</p>
+                            <a href="code.html" class="btn btn-primary">Shop Now</a>
+                        </div>
+                    `;
                 }
 
-                // Populate activities
-                const activitiesList = document.getElementById('activitiesList');
-                activitiesList.innerHTML = data.activities.map(activity => `
-                    <div class="activity-item">
-                        <i class="fas ${getActivityIcon(activity.activityType)}"></i>
-                        <strong>${formatActivityType(activity.activityType)}</strong>
-                        <p class="mb-0">${formatActivityDetails(activity)}</p>
-                        <small class="text-muted">${formatDate(activity.timestamp)}</small>
-                    </div>
-                `).join('');
-
-                // Populate customizations
-                const customizationsList = document.getElementById('customizationsList');
-                customizationsList.innerHTML = data.customizations.map(customization => `
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Custom ${customization.dressType}</h5>
-                            <p class="card-text">Fabric: ${customization.fabricType}</p>
-                            <p class="card-text">Color: ${customization.color}</p>
-                            <p class="card-text">Size: ${customization.size}</p>
-                            <p class="card-text">Quantity: ${customization.quantity}</p>
-                            <p class="card-text"><small class="text-muted">Notes: ${customization.additionalNotes}</small></p>
+                // Update activities section
+                const activitiesContainer = document.getElementById('activitiesContainer');
+                if (data.activities && data.activities.length > 0) {
+                    const activitiesHtml = data.activities.map(activity => {
+                        let icon = '';
+                        switch (activity.type) {
+                            case 'login':
+                                icon = '<i class="fas fa-sign-in-alt text-primary"></i>';
+                                break;
+                            case 'purchase':
+                                icon = '<i class="fas fa-shopping-cart text-success"></i>';
+                                break;
+                            case 'cart_update':
+                                icon = '<i class="fas fa-cart-plus text-info"></i>';
+                                break;
+                            case 'customization_request':
+                                icon = '<i class="fas fa-tshirt text-warning"></i>';
+                                break;
+                            case 'contact_form':
+                                icon = '<i class="fas fa-envelope text-secondary"></i>';
+                                break;
+                            default:
+                                icon = '<i class="fas fa-circle text-muted"></i>';
+                        }
+                        return `
+                            <div class="activity-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="activity-icon">
+                                        ${icon}
+                                    </div>
+                                    <div class="activity-content">
+                                        <p>${activity.description}</p>
+                                        <small class="text-muted">${formatDate(activity.timestamp)}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    activitiesContainer.innerHTML = activitiesHtml;
+                } else {
+                    activitiesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>No recent activities found</p>
+                            <p class="text-muted small">Your activities will appear here as you interact with the site</p>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }
+
+                // Update customizations section
+                const customizationsContainer = document.getElementById('customizationsContainer');
+                if (data.customizations && data.customizations.length > 0) {
+                    const customizationsHtml = data.customizations.map(custom => `
+                        <div class="customization-card mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">Request #${custom._id}</h6>
+                                <span class="badge ${custom.status.toLowerCase() === 'completed' ? 'bg-success' : 'bg-warning'}"
+                                      data-customization-id="${custom._id}">
+                                    ${custom.status}
+                                </span>
+                            </div>
+                            <p class="mb-2"><strong>Details:</strong> ${custom.details}</p>
+                            ${custom.additionalNotes ? `<p class="mb-2"><strong>Additional Notes:</strong> ${custom.additionalNotes}</p>` : ''}
+                            ${custom.phone ? `<p class="mb-2"><strong>Contact:</strong> ${custom.phone}</p>` : ''}
+                            <small class="text-muted">Requested on: ${formatDate(custom.date)}</small>
+                        </div>
+                    `).join('');
+                    customizationsContainer.innerHTML = customizationsHtml;
+                } else {
+                    customizationsContainer.innerHTML = `
+                        <div class="text-center p-4">
+                            <p>No customization requests found.</p>
+                            <a href="customize1.html" class="btn btn-primary">Create Custom Order</a>
+                        </div>
+                    `;
+                }
+
+                // Add the viewBill function
+                window.viewBill = function(orderId, orderData) {
+                    // Store the order data in localStorage
+                    const paymentData = {
+                        orderId: orderId,
+                        name: orderData.shippingDetails?.name || '',
+                        email: orderData.shippingDetails?.email || '',
+                        contact: orderData.shippingDetails?.phone || '',
+                        address: orderData.shippingDetails?.address || '',
+                        amount: (orderData.subtotal || 0) * 1.18,
+                        subtotal: orderData.subtotal || 0,
+                        gst: (orderData.subtotal || 0) * 0.18,
+                        paymentMethod: orderData.payment.paymentMethod,
+                        cartItems: orderData.items || [],
+                        paymentId: orderData.payment.customerId || ''
+                    };
+                    localStorage.setItem('paymentData', JSON.stringify(paymentData));
+                    
+                    // Redirect to bill page
+                    window.location.href = 'bill.html';
+                };
 
             } catch (error) {
-                console.error('Error loading profile:', error);
-                alert('Error loading profile data');
+                console.error('Error loading profile data:', error);
+                alert('Failed to load profile data. Please try again later.');
             }
         }
 
-        // Helper functions
-        function getStatusColor(status) {
-            const colors = {
-                'pending': 'warning',
-                'processing': 'info',
-                'shipped': 'primary',
-                'delivered': 'success'
-            };
-            return colors[status] || 'secondary';
-        }
-
-        function getActivityIcon(type) {
-            const icons = {
-                'login': 'fa-sign-in-alt',
-                'purchase': 'fa-shopping-cart',
-                'cart_update': 'fa-cart-plus',
-                'customization_request': 'fa-tshirt',
-                'contact_form': 'fa-envelope'
-            };
-            return icons[type] || 'fa-circle';
-        }
-
-        function formatActivityType(type) {
-            return type.split('_').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
-        }
-
-        function formatActivityDetails(activity) {
-            switch (activity.activityType) {
-                case 'login':
-                    return 'Logged in successfully';
-                case 'purchase':
-                    return `Purchased ${activity.details.items.length} items`;
-                case 'cart_update':
-                    return `${activity.details.action === 'add' ? 'Added' : 'Removed'} ${activity.details.item.name}`;
-                case 'customization_request':
-                    return `Requested customization for ${activity.details.dressType}`;
-                case 'contact_form':
-                    return 'Submitted a contact form';
-                default:
-                    return 'Performed an action';
-            }
-        }
-
-        // Load profile data when page loads
+        // Load profile data when the page loads
         document.addEventListener('DOMContentLoaded', loadProfileData);
     </script>
 </body>

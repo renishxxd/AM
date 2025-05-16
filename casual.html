@@ -11,7 +11,7 @@
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(140, 112, 0, 0.1);
             padding: 1rem 0;
         }
 
@@ -23,19 +23,19 @@
         }
 
         .navbar-brand:hover {
-            color: #727249;
+            color: #b39b4a;
             transform: translateY(-2px);
         }
 
         .nav-link {
-            color: #727249;
+            color: #8c7000;
             font-weight: 500;
             transition: all 0.3s ease;
             margin: 0 0.5rem;
         }
 
         .nav-link:hover {
-            color: #8c7000;
+            color: #b39b4a;
             transform: translateY(-2px);
         }
 
@@ -76,96 +76,133 @@
             object-fit: cover;
         }
         .title-box {
-            padding: 10px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 15px;
             display: inline-block;
-            color: #8c7000;  
-            font-weight: 1000; 
-            font-family: 'Papyrus';
+            color: #8c7000;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin: 40px 0;
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 30px rgba(140, 112, 0, 0.1);
+            border: 1px solid rgba(140, 112, 0, 0.1);
+        }
+        
+        .title-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(140, 112, 0, 0.1), transparent);
+            border-radius: 15px;
+            z-index: -1;
         }
         
         /* Custom Button Styles */
         .btn-cart {
-            background-color: #d4a017; /* Custom golden color */
-            border: none;
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
             color: white;
-            font-size: 14px; /* Slightly larger font */
-            padding: 8px 15px; /* Increase padding for better clickability */
-            width: 120px; /* Wider button */
-            border-radius: 5px; /* Slightly rounded corners */
-            display: block; /* Makes it a block element */
-            margin: 10px auto; /* Centers the button horizontally */
-            transition: background-color 0.3s ease, transform 0.2s;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 20px rgba(140, 112, 0, 0.2);
+            width: auto;
+            min-width: 160px;
+            margin: 20px auto 10px;
         }
         .btn-cart:hover {
-            background-color: #b3860b; /* Darker shade on hover */
-            transform: scale(1.05); /* Slight hover effect */
+            background: linear-gradient(135deg, #b39b4a 0%, #8c7000 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(140, 112, 0, 0.3);
         }
 
         .btn-more-details {
-            background-color: #ff8c00; /* New custom color */
-            border: none;
+            background: linear-gradient(135deg, #ff8c00 0%, #e07b00 100%);
             color: white;
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.5s;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.2);
+            margin-top: 30px;
         }
         .btn-more-details:hover {
-            background-color: #e07b00;
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #e07b00 0%, #ff8c00 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 140, 0, 0.3);
         }
         .cart-popup {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #28a745;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 20px 30px;
+            border-radius: 15px;
             display: none;
-            font-size: 16px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+            transform: translateY(100px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .cart-popup.show {
             display: block;
+            transform: translateY(0);
         }
 
         .custom-shadow {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(140, 112, 0, 0.1);
         }
 
         .wishlist-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.9);
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.95);
             border: none;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .wishlist-btn i {
-            color: #727249;
-            font-size: 1.2rem;
+            color: #8c7000;
+            font-size: 1.4rem;
             transition: all 0.3s ease;
         }
 
         .wishlist-btn:hover {
             transform: scale(1.1);
             background: white;
+            box-shadow: 0 8px 20px rgba(140, 112, 0, 0.2);
+        }
+
+        .wishlist-btn.active {
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
         }
 
         .wishlist-btn.active i {
-            color: #ff4444;
+            color: white;
         }
 
         .wishlist-count {
@@ -186,6 +223,149 @@
         .nav-wishlist {
             position: relative;
             display: inline-block;
+        }
+
+        /* Size Selection Styles */
+        .size-options {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .size-options input[type="radio"] {
+            display: none;
+        }
+
+        .size-options label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #8c7000;
+            border-radius: 50%;
+            color: #8c7000;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+        }
+
+        .size-options input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(140, 112, 0, 0.2);
+        }
+
+        .size-options label:hover {
+            background: rgba(140, 112, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        .product-card {
+            position: relative;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(140, 112, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(140, 112, 0, 0.15);
+        }
+
+        .product-image {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+
+        .product-details {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), white);
+            border-top: 1px solid rgba(140, 112, 0, 0.1);
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s ease;
+        }
+
+        .product-card:hover .product-title {
+            color: #8c7000;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            color: #8c7000;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .out-of-stock {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .out-of-stock::after {
+            content: 'Out of Stock';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .product-card {
+                margin-bottom: 20px;
+            }
+
+            .title-box {
+                font-size: 1.5rem;
+                padding: 15px;
+                margin: 30px 0;
+            }
+
+            .product-image {
+                height: 250px;
+            }
+
+            .product-details {
+                padding: 20px;
+            }
+
+            .btn-cart {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+                min-width: 140px;
+            }
         }
     </style>
 </head>
@@ -242,7 +422,7 @@
                                 <button class="btn border-0 p-0" type="button" data-bs-toggle="dropdown">
                                     <div id="userInitial" class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px; font-weight: bold; background: #8C7A4D; color: white;">
                                         <!-- Initial will be inserted here by JavaScript -->
-                                    </div>
+            </div>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" style="color: #727249" href="profile.html">My Profile</a></li>
@@ -250,7 +430,7 @@
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" style="color: #727249" id="logout-btn">Logout</a></li>
                                 </ul>
-                            </div>
+        </div>
                         </form>
                     </li>
                 </ul>
@@ -265,26 +445,26 @@
         <h4 class="title-box mb-0">Outfits For Men</h4>
         <div class="row" id="casual-men-products">
             <!-- Products will be loaded dynamically -->
-        </div>
+</div>
 
-        <h4 class="title-box mb-0">Outfits For Women</h4>
+<h4 class="title-box mb-0">Outfits For Women</h4>
         <div class="row" id="casual-women-products">
             <!-- Products will be loaded dynamically -->
-        </div>
+</div>
 
-        <h4 class="title-box mb-0">Outfits For Kids</h4>
+<h4 class="title-box mb-0">Outfits For Kids</h4>
         <div class="row" id="casual-kids-products">
             <!-- Products will be loaded dynamically -->
-        </div>
+</div>
 
-        <div class="text-center mt-2 mb-4">
-            <h4 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'"> 
-                If you are looking for something else, click below for more details.</h4>
-            <button class="btn btn-more-details btn-lg">More Details <i class="fas fa-arrow-right"></i></button>
-        </div>
+    <div class="text-center mt-2 mb-4">
+        <h4 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'"> 
+            If you are looking for something else, click below for more details.</h4>
+        <button class="btn btn-more-details btn-lg">More Details <i class="fas fa-arrow-right"></i></button>
     </div>
+</div>
 
-    <div id="cart-popup" class="cart-popup"></div>
+<div id="cart-popup" class="cart-popup"></div>
 
     <script>
         // Function to load products from localStorage
@@ -329,32 +509,95 @@
             products.forEach(product => {
                 const productCard = `
                     <div class="col-md-4 mb-4">
-                        <div class="card">
+                        <div class="product-card">
                             <button class="wishlist-btn" 
                                     onclick="toggleWishlist(${product.id}, '${product.name}', ${product.price}, '${product.image}')">
                                 <i class="far fa-heart"></i>
                             </button>
-                            <img src="${product.image}" class="img-thumbnail" alt="${product.name}">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">${product.name}</h5>
-                                <p class="card-text"><strong>Price: ₹${product.price}</strong></p>
-                                <button class="btn btn-cart btn-sm" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image}')">Add to Cart</button>
+                            <img src="${product.image}" class="product-image" alt="${product.name}">
+                            <div class="product-details">
+                                <h5 class="product-title">${product.name}</h5>
+                                <p class="product-price">₹${product.price}</p>
+                                <div class="size-options">
+                                    <input type="radio" name="size-${product.id}" id="S-${product.id}" value="S">
+                                    <label for="S-${product.id}">S</label>
+                                    
+                                    <input type="radio" name="size-${product.id}" id="M-${product.id}" value="M">
+                                    <label for="M-${product.id}">M</label>
+                                    
+                                    <input type="radio" name="size-${product.id}" id="L-${product.id}" value="L">
+                                    <label for="L-${product.id}">L</label>
+                                    
+                                    <input type="radio" name="size-${product.id}" id="XL-${product.id}" value="XL">
+                                    <label for="XL-${product.id}">XL</label>
+                                    
+                                    <input type="radio" name="size-${product.id}" id="XXL-${product.id}" value="XXL">
+                                    <label for="XXL-${product.id}">XXL</label>
+                                </div>
+                                <button class="btn btn-cart" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image}')">
+                                    Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
                 `;
                 container.innerHTML += productCard;
             });
+
+            // Initialize wishlist states after rendering
+            initializeWishlistStates();
         }
 
-        // Load products when page loads
-        document.addEventListener('DOMContentLoaded', loadProducts);
+        // Function to initialize wishlist states
+        async function initializeWishlistStates() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const response = await fetch('/wishlist', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const wishlistItems = data.wishlist || [];
+                    
+                    // Update all wishlist buttons
+                    wishlistItems.forEach(item => {
+                        const wishlistBtn = document.querySelector(`.wishlist-btn[onclick*="${item.id}"]`);
+                        if (wishlistBtn) {
+                            wishlistBtn.classList.add('active');
+                            wishlistBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                        }
+                    });
+
+                    // Update wishlist count
+                    document.getElementById('wishlistCount').textContent = wishlistItems.length;
+                }
+            } catch (error) {
+                console.error('Error initializing wishlist states:', error);
+            }
+        }
+
+        // Load products and initialize wishlist when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            loadProducts();
+            await initializeWishlistStates();
+        });
 
         async function addToCart(id, name, price, img) {
             const token = localStorage.getItem("token");
             if (!token) {
                 alert("Please sign in to add items to cart");
                 window.location.href = "signin.html";
+                return;
+            }
+
+            const selectedSize = document.querySelector(`input[name="size-${id}"]:checked`);
+            if (!selectedSize) {
+                alert("Please select a size before adding to cart");
                 return;
             }
 
@@ -384,7 +627,8 @@
                         name, 
                         price, 
                         quantity: 1, 
-                        img 
+                        img,
+                        size: selectedSize.value
                     })
                 });
 
@@ -425,18 +669,19 @@
                             name: name,
                             price: price,
                             quantity: 1,
-                            img: img
+                            img: img,
+                            size: selectedSize.value
                         });
                     }
                     
                     localStorage.setItem("cart", JSON.stringify(localCart));
                     
-                    let popup = document.getElementById("cart-popup");
-                    popup.innerHTML = `<strong>${name}</strong> has been added to your cart!`;
-                    popup.classList.add("show");
+    let popup = document.getElementById("cart-popup");
+    popup.innerHTML = `<strong>${name}</strong> has been added to your cart!`;
+    popup.classList.add("show");
 
-                    setTimeout(() => {
-                        popup.classList.remove("show");
+    setTimeout(() => {
+        popup.classList.remove("show");
                     }, 2000);
                 } else {
                     throw new Error(data.error || 'Failed to add item to cart');

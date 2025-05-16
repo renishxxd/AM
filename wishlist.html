@@ -20,151 +20,242 @@
         }
 
         .wishlist-header {
-            background: linear-gradient(45deg, #8c7000, #727249);
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
             color: white;
-            padding: 30px 0;
-            margin-bottom: 40px;
-            border-radius: 0 0 50px 50px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px 0;
+            margin-bottom: 50px;
+            border-radius: 0 0 60px 60px;
+            box-shadow: 0 10px 30px rgba(140, 112, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wishlist-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            pointer-events: none;
         }
 
         .wishlist-stats {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(140, 112, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(140, 112, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .wishlist-stats:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(140, 112, 0, 0.15);
+        }
+
+        .wishlist-stats h4 {
+            color: #8c7000;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .wishlist-stats p {
+            color: #727249;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
         }
 
         .wishlist-item {
             position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
             overflow: hidden;
             background: white;
-            margin-bottom: 30px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(140, 112, 0, 0.1);
+            border: 1px solid rgba(140, 112, 0, 0.08);
         }
 
         .wishlist-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(140, 112, 0, 0.18);
         }
 
         .wishlist-img {
             width: 100%;
-            height: 250px;
+            height: 300px;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .wishlist-item:hover .wishlist-img {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .wishlist-content {
-            padding: 20px;
+            padding: 30px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), white);
         }
 
         .wishlist-content h5 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
             color: #333;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        .size-selector {
+            margin-bottom: 20px;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .size-option {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #8c7000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .size-option:hover {
+            background: #8c7000;
+            color: white;
+        }
+
+        .size-option.selected {
+            background: #8c7000;
+            color: white;
         }
 
         .price-tag {
-            background: #8c7000;
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 8px 20px;
+            border-radius: 25px;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(140, 112, 0, 0.2);
         }
 
         .btn-remove {
-            background: #ff4444;
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            padding: 12px 25px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(204, 0, 0, 0.2);
         }
 
         .btn-remove:hover {
-            background: #cc0000;
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(204, 0, 0, 0.3);
         }
 
         .btn-cart {
-            background: linear-gradient(45deg, #8c7000, #727249);
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            padding: 12px 25px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(140, 112, 0, 0.2);
         }
 
         .btn-cart:hover {
-            background: linear-gradient(45deg, #727249, #8c7000);
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #b39b4a 0%, #8c7000 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(140, 112, 0, 0.3);
         }
 
         .category-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            background: linear-gradient(45deg, #8c7000, #727249);
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, rgba(140, 112, 0, 0.95) 0%, rgba(179, 155, 74, 0.95) 100%);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
             font-size: 0.9rem;
-            text-transform: capitalize;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
         }
 
         .empty-wishlist {
             text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 20px;
-            margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 80px 30px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(140, 112, 0, 0.08);
+            border: 1px solid rgba(140, 112, 0, 0.1);
         }
 
         .empty-wishlist i {
-            font-size: 4rem;
+            font-size: 5rem;
             color: #8c7000;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
 
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.98);
             color: #333;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             z-index: 1000;
             transform: translateX(150%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(140, 112, 0, 0.1);
         }
 
         .notification.show {
@@ -172,21 +263,21 @@
         }
 
         .notification i {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
 
         .notification.success {
-            border-left: 4px solid #28a745;
+            border-left: 5px solid #28a745;
         }
 
         .notification.error {
-            border-left: 4px solid #ff4444;
+            border-left: 5px solid #ff4444;
         }
 
         .filter-buttons {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -195,15 +286,21 @@
             background: white;
             border: 2px solid #8c7000;
             color: #8c7000;
-            padding: 8px 20px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            padding: 10px 25px;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
         .filter-btn:hover, .filter-btn.active {
-            background: #8c7000;
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(140, 112, 0, 0.2);
         }
 
         .cart-popup {
@@ -268,7 +365,7 @@
                         <form class="d-flex">
                             <div class="dropdown">
                                 <button class="btn border-0 p-0" type="button" data-bs-toggle="dropdown">
-                                    <div id="userInitial" class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px; font-weight: bold;">
+                                    <div id="userInitial" class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px; font-weight: bold; background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%); color: white;">
                                     </div>
                                 </button>
                                 <ul class="dropdown-menu">
@@ -378,7 +475,26 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch wishlist');
+                    // Silently handle the error and show empty state
+                    const container = document.getElementById('wishlistContainer');
+                    container.innerHTML = `
+                        <div class="col-12">
+                            <div class="empty-wishlist">
+                                <i class="fas fa-heart-broken"></i>
+                                <h3>Your wishlist is empty</h3>
+                                <p>Add items to your wishlist while shopping to save them for later!</p>
+                                <a href="code.html" class="btn btn-cart">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    Continue Shopping
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    // Reset stats
+                    document.getElementById('totalItems').textContent = '0 Items';
+                    document.getElementById('totalValue').textContent = '₹0';
+                    document.getElementById('mostCommon').textContent = '-';
+                    return;
                 }
 
                 const data = await response.json();
@@ -421,8 +537,17 @@
                             <div class="wishlist-content">
                                 <h5>${item.name}</h5>
                                 <div class="price-tag">₹${item.price}</div>
+                                <div class="size-selector">
+                                    <label>Size:</label>
+                                    <div class="size-options">
+                                        <div class="size-option" data-size="S">S</div>
+                                        <div class="size-option" data-size="M">M</div>
+                                        <div class="size-option" data-size="L">L</div>
+                                        <div class="size-option" data-size="XL">XL</div>
+                                    </div>
+                                </div>
                                 <div class="d-flex justify-content-between gap-2">
-                                    <button class="btn btn-cart flex-grow-1" onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}')">
+                                    <button class="btn btn-cart flex-grow-1" onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.img}', this)">
                                         <i class="fas fa-shopping-cart"></i>
                                         Add to Cart
                                     </button>
@@ -435,12 +560,36 @@
                     </div>
                 `).join('');
 
-                // Update wishlist count in the navbar
-                document.getElementById('wishlistCount').textContent = wishlist.length;
+                // Add size selection functionality
+                document.querySelectorAll('.size-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parent = this.parentElement;
+                        parent.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                    });
+                });
 
             } catch (error) {
                 console.error('Error loading wishlist:', error);
-                showNotification('Failed to load wishlist. Please try again.', 'error');
+                // Show empty state instead of error notification
+                const container = document.getElementById('wishlistContainer');
+                container.innerHTML = `
+                    <div class="col-12">
+                        <div class="empty-wishlist">
+                            <i class="fas fa-heart-broken"></i>
+                            <h3>Your wishlist is empty</h3>
+                            <p>Add items to your wishlist while shopping to save them for later!</p>
+                            <a href="code.html" class="btn btn-cart">
+                                <i class="fas fa-shopping-bag"></i>
+                                Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                `;
+                // Reset stats
+                document.getElementById('totalItems').textContent = '0 Items';
+                document.getElementById('totalValue').textContent = '₹0';
+                document.getElementById('mostCommon').textContent = '-';
             }
         }
 
@@ -476,10 +625,91 @@
             }, 3000);
         }
 
+        // Function to toggle wishlist
+        async function toggleWishlist(id, name, price, img) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showNotification('Please sign in to add items to your wishlist', 'error');
+                setTimeout(() => {
+                    window.location.href = 'signin.html';
+                }, 2000);
+                return;
+            }
+
+            const wishlistBtn = document.querySelector(`.wishlist-btn[onclick*="${id}"]`);
+            const isWishlisted = wishlistBtn.classList.contains('active');
+
+            try {
+                if (isWishlisted) {
+                    // Remove from wishlist
+                    const response = await fetch('/wishlist/remove', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ id })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to remove from wishlist');
+                    }
+
+                    wishlistBtn.classList.remove('active');
+                    wishlistBtn.innerHTML = '<i class="far fa-heart"></i>';
+                    showNotification(`${name} removed from wishlist`, 'error');
+                } else {
+                    // Add to wishlist
+                    const response = await fetch('/wishlist/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ 
+                            id, 
+                            name, 
+                            price, 
+                            img, 
+                            category: 'traditional'
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to add to wishlist');
+                    }
+
+                    wishlistBtn.classList.add('active');
+                    wishlistBtn.innerHTML = '<i class="fas fa-heart"></i>';
+                    showNotification(`${name} added to wishlist`, 'success');
+                }
+
+                // Update wishlist count by fetching current wishlist
+                const wishlistResponse = await fetch('/wishlist', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (wishlistResponse.ok) {
+                    const data = await wishlistResponse.json();
+                    document.getElementById('wishlistCount').textContent = data.wishlist.length;
+                }
+
+            } catch (error) {
+                console.error('Error toggling wishlist:', error);
+                showNotification('Failed to update wishlist. Please try again.', 'error');
+            }
+        }
+
+        // Function to remove from wishlist
         async function removeFromWishlist(id, name) {
             const token = localStorage.getItem('token');
             if (!token) {
-                window.location.href = 'signin.html';
+                showNotification('Please sign in to manage your wishlist', 'error');
+                setTimeout(() => {
+                    window.location.href = 'signin.html';
+                }, 2000);
                 return;
             }
 
@@ -508,13 +738,27 @@
             }
         }
 
-        async function addToCart(id, name, price, img) {
+        // Function to add to cart
+        async function addToCart(id, name, price, img, button) {
             const token = localStorage.getItem("token");
             if (!token) {
-                alert("Please sign in to add items to cart");
-                window.location.href = "signin.html";
+                showNotification('Please sign in to add items to cart', 'error');
+                setTimeout(() => {
+                    window.location.href = "signin.html";
+                }, 2000);
                 return;
             }
+
+            // Get selected size
+            const sizeSelector = button.closest('.wishlist-item').querySelector('.size-options');
+            const selectedSize = sizeSelector.querySelector('.selected');
+            
+            if (!selectedSize) {
+                showNotification('Please select a size', 'error');
+                return;
+            }
+
+            const size = selectedSize.dataset.size;
 
             try {
                 const response = await fetch('/cart/add', {
@@ -528,7 +772,8 @@
                         name, 
                         price, 
                         quantity: 1, 
-                        img 
+                        img,
+                        size 
                     })
                 });
 
@@ -536,7 +781,7 @@
                     throw new Error('Failed to add item to cart');
                 }
 
-                showNotification(`${name} has been added to your cart!`, 'success');
+                showNotification(`${name} (Size: ${size}) has been added to your cart!`, 'success');
             } catch (error) {
                 console.error("Error adding to cart:", error);
                 showNotification('Failed to add item to cart. Please try again.', 'error');

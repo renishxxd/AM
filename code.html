@@ -64,7 +64,7 @@
                 if (isAdmin) {
                     userInterface = `
                         <div class="admin-dashboard">
-                            <h2>Welcome, Admin ${data.user.username}!</h2>
+                        <h2>Welcome, Admin ${data.user.username}!</h2>
                             <div class="admin-controls mt-4">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -101,7 +101,7 @@
                 } else {
                     userInterface = `
                         <div class="user-dashboard">
-                            <h2>Welcome, ${firstLetter} ${data.user.username}!</h2>
+                    <h2>Welcome, ${firstLetter} ${data.user.username}!</h2>
                             <div class="user-controls mt-4">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -144,6 +144,312 @@
         }
     </script>
     <style>
+        :root {
+            --primary-color: #8c7000;
+            --secondary-color: #b39b4a;
+            --accent-color: #e2e2b4;
+            --text-color: #2c2c2c;
+            --bg-gradient: linear-gradient(135deg, #faf6e7 0%, #f6f3e2 100%);
+            --card-bg: #fff;
+            --shadow: 0 4px 24px rgba(140, 112, 0, 0.07);
+            --border-radius: 18px;
+            --transition: all 0.25s cubic-bezier(.4,0,.2,1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+        }
+
+        .navbar {
+            background: #fff !important;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+        .navbar-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+        .navbar-brand:hover {
+            color: var(--secondary-color);
+            text-shadow: 0 2px 8px rgba(179, 155, 74, 0.07);
+        }
+        .nav-link {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin: 0 0.75rem;
+            font-size: 1.08rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 8px rgba(179, 155, 74, 0.10);
+        }
+
+        /* Card Styles */
+        .card, .admin-card, .stats-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: none;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        .card:hover, .admin-card:hover, .stats-card:hover {
+            transform: translateY(-4px) scale(1.012);
+            box-shadow: 0 8px 32px rgba(140, 112, 0, 0.13);
+        }
+        .card-title, .admin-title, .stats-card h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .card-text, .admin-card p, .stats-card p {
+            color: #6d6d4e;
+        }
+
+        /* Buttons */
+        .btn, .admin-btn, .logout-btn, .btn-custom, .btn-primary {
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(140, 112, 0, 0.07);
+        }
+        .btn-primary, .admin-btn-primary, .btn-custom {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            border: none;
+        }
+        .btn-primary:hover, .admin-btn-primary:hover, .btn-custom:hover {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(140, 112, 0, 0.15);
+        }
+        .btn-secondary, .admin-btn-secondary {
+            background: #e2e2b4;
+            color: var(--primary-color);
+            border: none;
+        }
+        .btn-secondary:hover, .admin-btn-secondary:hover {
+            background: #b39b4a;
+            color: #fff;
+        }
+        .btn-danger, .admin-btn-danger {
+            background: #dc3545;
+            color: #fff;
+            border: none;
+        }
+        .btn-danger:hover, .admin-btn-danger:hover {
+            background: #b02a37;
+            color: #fff;
+        }
+        .btn-success, .admin-btn-success {
+            background: #198754;
+            color: #fff;
+            border: none;
+        }
+        .btn-success:hover, .admin-btn-success:hover {
+            background: #146c43;
+            color: #fff;
+        }
+        .btn-warning, .admin-btn-warning {
+            background: #ffc107;
+            color: #8c7000;
+            border: none;
+        }
+        .btn-warning:hover, .admin-btn-warning:hover {
+            background: #b39b4a;
+            color: #fff;
+        }
+
+        /* Product Cards */
+        .product-card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            background: #fff;
+            padding: 1.5rem 1rem;
+            transition: var(--transition);
+        }
+        .product-card:hover {
+            box-shadow: 0 8px 32px rgba(140, 112, 0, 0.13);
+            transform: translateY(-4px) scale(1.012);
+        }
+        .product-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .product-card:hover .product-title {
+            color: var(--secondary-color);
+        }
+        .product-price {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .product-img {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(140, 112, 0, 0.07);
+            margin-bottom: 1rem;
+            width: 100%;
+            object-fit: cover;
+            max-height: 180px;
+        }
+
+        /* Forms */
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 1px solid #e2e2b4;
+            box-shadow: none;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.1rem rgba(140, 112, 0, 0.08);
+        }
+
+        /* Badges & Status */
+        .status-badge, .badge {
+            font-size: 0.98rem;
+            padding: 0.4em 1.1em;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: #f6f3e2;
+            color: var(--primary-color);
+            margin-right: 0.5em;
+        }
+        .status-badge.success, .badge-success {
+            background: #d1e7dd;
+            color: #198754;
+        }
+        .status-badge.warning, .badge-warning {
+            background: #fff3cd;
+            color: #b39b4a;
+        }
+        .status-badge.danger, .badge-danger {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+        .status-badge.info, .badge-info {
+            background: #cff4fc;
+            color: #0dcaf0;
+        }
+
+        /* Utility */
+        .shadow-sm {
+            box-shadow: 0 2px 8px rgba(140, 112, 0, 0.10) !important;
+        }
+        .rounded {
+            border-radius: var(--border-radius) !important;
+        }
+        .mb-4 {
+            margin-bottom: 2rem !important;
+        }
+        .mt-4 {
+            margin-top: 2rem !important;
+        }
+        .gap-2 {
+            gap: 0.75rem !important;
+        }
+        .gap-3 {
+            gap: 1.5rem !important;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 992px) {
+            .navbar {
+                padding: 1rem 1rem;
+            }
+            .admin-card, .stats-card, .product-card {
+                padding: 1rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .admin-card, .stats-card, .product-card {
+                margin-bottom: 1rem;
+            }
+            .navbar {
+                margin-bottom: 1rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .navbar {
+                padding: 0.5rem 0.5rem;
+            }
+            .admin-card, .stats-card, .product-card {
+                padding: 0.5rem;
+            }
+            h1, h2, h3, h4, h5 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+    <style>
+        .btn-cart {
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 20px rgba(140, 112, 0, 0.2);
+            width: auto;
+            min-width: 160px;
+            margin: 20px auto 10px;
+        }
+
+        .btn-cart:hover {
+            background: linear-gradient(135deg, #b39b4a 0%, #8c7000 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(140, 112, 0, 0.3);
+        }
+
+        .wishlist-btn i {
+            color: #8c7000;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-btn.active {
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
+        }
+
+        .size-options label {
+            border: 2px solid #8c7000;
+            color: #8c7000;
+        }
+
+        .size-options input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #8c7000 0%, #b39b4a 100%);
+            color: white;
+        }
+
+        .product-price {
+            color: #8c7000;
+        }
+
+        .product-card:hover .product-title {
+            color: #8c7000;
+        }
+
         /* Navbar Styles */
         .navbar {
             background-color: #ffffff !important;
@@ -675,19 +981,19 @@
           </ul>
       </div>
       </div>
-    </nav>
+      </nav>
   
-    <br>
+      <br>
   
-    <section class="hero shadow shadow-info">
-        <div class="container text-center">
-            <div class="jumbotron">
-                <h1 style="color: #e2e2b4;">"Your Dream Outfit Starts Here"</h1>
+      <section class="hero shadow shadow-info">
+          <div class="container text-center">
+              <div class="jumbotron">
+                  <h1 style="color: #e2e2b4;">"Your Dream Outfit Starts Here"</h1>
                 
-                <a href="#products" class="btn btn-warning btn-lg">Explore Products</a>
-            </div>
-        </div>
-    </section>
+                  <a href="#products" class="btn btn-warning btn-lg">Explore Products</a>
+              </div>
+          </div>
+      </section>
   
     <section class="featured-collection">
         <div class="container-fluid p-0">
@@ -715,121 +1021,121 @@
                         </a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+              </div>
+          </div>
+      </section>
   
-    <div class="profile-area">
-        <div class="container">
-            <h3 id="products" style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Step into Fashion with Us</h3>
-        </div>
-        <div class="container">
-            <div class="row">
-                <!-- Card 1 -->
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="img1">
-                            <img src="trd2.jpg" alt="">
-                        </div>
-                        <div class="img2">
-                            <img src="trd-logo1.png" alt="">
-                        </div>
-                        <div class="main-text">
-                            <h2>Traditional Outfit</h2>
-                            <center><p>From exclusive red carpet events to everyday fashion, Indian traditional clothing is making a mark globally.</p></center>
-                            <a href="traditional.html" class="btn btn-warning">View More</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 2 -->
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="img1">
-                            <img src="fml1.jpg" alt="">
-                        </div>
-                        <div class="img2">
-                            <img src="fml-logo1.png" alt="">
-                        </div>
-                        <div class="main-text">
-                            <h2>Formal Outfit</h2>
+      <div class="profile-area">
+          <div class="container">
+              <h3 id="products" style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Step into Fashion with Us</h3>
+          </div>
+          <div class="container">
+              <div class="row">
+                  <!-- Card 1 -->
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="img1">
+                              <img src="trd2.jpg" alt="">
+                          </div>
+                          <div class="img2">
+                              <img src="trd-logo1.png" alt="">
+                          </div>
+                          <div class="main-text">
+                              <h2>Traditional Outfit</h2>
+                              <center><p>From exclusive red carpet events to everyday fashion, Indian traditional clothing is making a mark globally.</p></center>
+                              <a href="traditional.html" class="btn btn-warning">View More</a>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Card 2 -->
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="img1">
+                              <img src="fml1.jpg" alt="">
+                          </div>
+                          <div class="img2">
+                              <img src="fml-logo1.png" alt="">
+                          </div>
+                          <div class="main-text">
+                              <h2>Formal Outfit</h2>
                             <center><p>In this article, we'll explore the various types of formal clothing on how to dress appropriately for any formal event.</p></center>
-                            <a href="formal.html" class="btn btn-warning">View More</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 3 -->
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="img1">
-                            <img src="cusl1.jpg" alt="">
-                        </div>
-                        <div class="img2">
-                            <img src="cusl1-logo.png" alt="">
-                        </div>
-                        <div class="main-text">
-                            <h2>Casual Outfit</h2>
-                            <center><p>Casual style is all about right balance between comfort and fashion. like jeans, t-shirts, sneakers, and lightweight layers.</p></center>
-                            <a href="casual.html" class="btn btn-warning">View More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                              <a href="formal.html" class="btn btn-warning">View More</a>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Card 3 -->
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="img1">
+                              <img src="cusl1.jpg" alt="">
+                          </div>
+                          <div class="img2">
+                              <img src="cusl1-logo.png" alt="">
+                          </div>
+                          <div class="main-text">
+                              <h2>Casual Outfit</h2>
+                              <center><p>Casual style is all about right balance between comfort and fashion. like jeans, t-shirts, sneakers, and lightweight layers.</p></center>
+                              <a href="casual.html" class="btn btn-warning">View More</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
   
-    <section class="destinations1"></section>
-    <div class="container">
-        <h3 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Best Offers For a Week</h3>
-    </div>
+      <section class="destinations1"></section>
+      <div class="container">
+          <h3 style="color: #8c7000; font-weight: 1000; font-family: 'Papyrus'" class="fash mb-5 p-3 text-center border shadow">Best Offers For a Week</h3>
+      </div>
   
-    <br>
+      <br>
   
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner mb-4">
-            <div class="carousel-item active">
-                <img src="off-trd-ban.jpg" class="d-block w-100">
-                <div class="carousel-caption">
-                    <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Traditional Collections</h3>
-                    <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 12% Discount</h5>
-                    <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="off-fml-ban.jpg" class="d-block w-100">
-                <div class="carousel-caption">
-                    <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Formal Collections</h3>
-                    <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 20% Discount</h5>
-                    <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="off-csl-ban.jpg" class="d-block w-100">
-                <div class="carousel-caption">
-                    <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Casual Collections</h3>
-                    <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 25% Discount</h5>
-                    <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
-        <div class="carousel-indicators">
-            <button data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></button>
-            <button data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
-            <button data-bs-target="#carouselExample" data-bs-slide-to="2"></button>
-        </div>
-    </div>
+      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+          <div class="carousel-inner mb-4">
+              <div class="carousel-item active">
+                  <img src="off-trd-ban.jpg" class="d-block w-100">
+                  <div class="carousel-caption">
+                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Traditional Collections</h3>
+                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 12% Discount</h5>
+                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <img src="off-fml-ban.jpg" class="d-block w-100">
+                  <div class="carousel-caption">
+                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Formal Collections</h3>
+                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 20% Discount</h5>
+                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <img src="off-csl-ban.jpg" class="d-block w-100">
+                  <div class="carousel-caption">
+                      <h3 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">For Casual Collections</h3>
+                      <h5 style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Each Product 25% Discount</h5>
+                      <p style="color: #ffffff; font-weight: 1000; font-family: 'Papyrus'">Enjoy The Offer With Your Products</p>
+                  </div>
+              </div>
+          </div>
+          <button class="carousel-control-prev" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" data-bs-target="#carouselExample" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+          </button>
+          <div class="carousel-indicators">
+              <button data-bs-target="#carouselExample" data-bs-slide-to="0" class="active"></button>
+              <button data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
+              <button data-bs-target="#carouselExample" data-bs-slide-to="2"></button>
+          </div>
+      </div>
     
     <!-- User Info Section -->
     <div id="userInfo" class="container mt-5"></div>
     
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
     <!-- Footer Section -->
     <footer style="background-color: #C5B358; padding: 50px 0 20px; color: #000;">
@@ -1101,6 +1407,93 @@
             }
         });
     });
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function proceedToPayment() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'signin.html';
+                return;
+            }
+
+            try {
+                // First, create an order on your server
+                const response = await fetch('/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        amount: calculateTotal() * 100, // Convert to paise
+                        currency: 'INR',
+                        receipt: 'order_' + Date.now()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create order');
+                }
+
+                const orderData = await response.json();
+
+                // Initialize Razorpay
+                const options = {
+                    key: 'YOUR_RAZORPAY_KEY', // Replace with your Razorpay key
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: 'AM Apparel',
+                    description: 'Payment for your order',
+                    order_id: orderData.id,
+                    handler: async function(response) {
+                        // Handle successful payment
+                        try {
+                            const verifyResponse = await fetch('/verify-payment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify({
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+
+                            if (!verifyResponse.ok) {
+                                throw new Error('Payment verification failed');
+                            }
+
+                            // Redirect to success page or show success message
+                            window.location.href = 'success.html';
+                        } catch (error) {
+                            console.error('Payment verification error:', error);
+                            alert('Payment verification failed. Please contact support.');
+                        }
+                    },
+                    prefill: {
+                        name: localStorage.getItem('username') || '',
+                        email: localStorage.getItem('email') || '',
+                        contact: localStorage.getItem('phone') || ''
+                    },
+                    theme: {
+                        color: '#8C7A4D'
+                    }
+                };
+
+                const razorpay = new Razorpay(options);
+                razorpay.open();
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Failed to process payment. Please try again.');
+            }
+        }
+
+        // Update the checkout button to use the new payment function
+        document.getElementById('checkoutBtn').addEventListener('click', proceedToPayment);
     </script>
 </body>
 </html>

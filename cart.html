@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - AM Apparel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -26,7 +26,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             margin: 2rem auto;
-            max-width: 1000px;
+            max-width: 1200px;
         }
 
         .cart-title {
@@ -62,20 +62,86 @@
         .cart-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            transition: transform 0.2s;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .cart-item img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding-left: 1rem;
         }
 
         .cart-item-name {
             font-weight: 600;
-            color: var(--primary-color);
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .item-size {
+            color: #666;
+            font-size: 0.9rem;
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #d4a017;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 2rem;
+        }
+
+        .quantity-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .remove-btn {
+            color: #dc3545;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .remove-btn:hover {
+            color: #bd2130;
         }
 
         .cart-total {
@@ -108,21 +174,6 @@
             color: var(--secondary-color);
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
-        }
-
-        .btn-remove {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-remove:hover {
-            background: #c82333;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .btn-checkout {
@@ -221,6 +272,56 @@
             align-items: center;
             justify-content: center;
         }
+
+        .cart-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-top: 2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-top: 2px solid #ddd;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .checkout-btn {
+            background: #d4a017;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .checkout-btn:hover {
+            background: #b3860b;
+            transform: translateY(-2px);
+        }
+
+        .continue-shopping {
+            color: #d4a017;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -295,85 +396,101 @@
 
     <div class="container cart-container">
         <h2 class="cart-title">🛒 Your Shopping Cart</h2>
-
-        <div id="empty-message" class="empty-cart d-none">
-            <i class="fas fa-shopping-cart"></i>
-            <p>Your cart is empty!</p>
-            <a href="code.html" class="btn btn-checkout">Start Shopping</a>
-        </div>
         
         <div class="table-responsive">
             <table class="table cart-table">
                 <thead>
                     <tr>
                         <th>Product</th>
-                        <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="cart-items"></tbody>
+                <tbody id="cart-items">
+                    <!-- Cart items will be loaded here -->
+                </tbody>
             </table>
         </div>
 
-        <div class="cart-total">
-            Total: ₹<span id="cart-total">0.00</span>
+        <div id="cart-summary" class="cart-summary">
+            <div class="summary-item">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0.00</span>
+            </div>
+            <div class="summary-item">
+                <span>Tax (18%):</span>
+                <span id="tax">₹0.00</span>
+            </div>
+            <div class="summary-item summary-total">
+                <span>Total:</span>
+                <span id="total">₹0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+            <a href="code.html" class="continue-shopping">Continue Shopping</a>
         </div>
-
-        <button class="btn btn-checkout" id="checkout-btn">Proceed to Checkout</button>
     </div>
 
     <script>
         // Function to load cart items from localStorage
         function updateCart() {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let cartItems = document.getElementById("cart-items");
-            let cartTotal = document.getElementById("cart-total");
-            let emptyMessage = document.getElementById("empty-message");
-            let checkoutBtn = document.getElementById("checkout-btn");
-
-            cartItems.innerHTML = "";
-            let total = 0;
-
+            const cartContainer = document.getElementById("cart-items");
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            
             if (cart.length === 0) {
-                emptyMessage.classList.remove("d-none");
-                checkoutBtn.classList.add("d-none");
+                cartContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Your cart is empty</p>
+                        <a href="code.html" class="btn btn-primary">Continue Shopping</a>
+                    </div>`;
+                document.getElementById("cart-summary").style.display = "none";
                 return;
             }
 
-            emptyMessage.classList.add("d-none");
-            checkoutBtn.classList.remove("d-none");
+            let cartHTML = "";
+            let subtotal = 0;
 
             cart.forEach(item => {
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>
-                        <div class="cart-item">
-                            <img src="${item.img}" alt="${item.name}">
-                            <span class="cart-item-name">${item.name}</span>
-                        </div>
-                    </td>
-                    <td>₹${item.price.toFixed(2)}</td>
-                    <td>
-                        <div class="quantity-input">
-                            <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
-                            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
-                            <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                        </div>
-                    </td>
-                    <td>₹${(item.price * item.quantity).toFixed(2)}</td>
-                    <td>
-                        <button class="btn btn-remove" onclick="removeItem(${item.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                cartItems.appendChild(row);
-                total += item.price * item.quantity;
+                subtotal += item.Product_price * item.Quantity;
+                cartHTML += `
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="${item.Product_Image}" alt="${item.Product_Name}" style="width: 80px; height: 80px; object-fit: cover; margin-right: 15px;" />
+                                <div>
+                                    <h6 class="mb-0">${item.Product_Name}</h6>
+                                    <div class="item-size mb-1">Size: ${item.Product_size || 'N/A'}</div>
+                                    <p class="mb-0 item-price">₹${item.Product_price}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="quantity-input">
+                                <button onclick="updateQuantity('${item._id}', ${item.Quantity - 1})" ${item.Quantity <= 1 ? 'disabled' : ''}>-</button>
+                                <input type="number" value="${item.Quantity}" min="1" onchange="updateQuantity('${item._id}', this.value)" />
+                                <button onclick="updateQuantity('${item._id}', ${item.Quantity + 1})">+</button>
+                            </div>
+                        </td>
+                        <td>₹${(item.Product_price * item.Quantity).toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="removeItem('${item._id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>`;
             });
 
-            cartTotal.textContent = total.toFixed(2);
+            cartContainer.innerHTML = cartHTML;
+
+            // Update cart summary
+            const tax = subtotal * 0.18; // 18% tax
+            const total = subtotal + tax;
+
+            document.getElementById("cart-summary").style.display = "block";
+            document.getElementById("subtotal").textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById("tax").textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById("total").textContent = `₹${total.toFixed(2)}`;
         }
 
         // Function to update quantity in both localStorage and server
@@ -388,14 +505,17 @@
             }
             
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let itemIndex = cart.findIndex(item => item.id === id);
+            let itemIndex = cart.findIndex(item => item._id === id);
             
             if (itemIndex !== -1) {
-                // Update local storage first
-                cart[itemIndex].quantity = parseInt(newQuantity);
+                const currentItem = cart[itemIndex];
+                // Preserve all product details when updating quantity
+                cart[itemIndex] = {
+                    ...currentItem,
+                    Quantity: parseInt(newQuantity)
+                };
                 localStorage.setItem("cart", JSON.stringify(cart));
                 
-                // Then update server
                 try {
                     const response = await fetch('/cart/update', {
                         method: 'POST',
@@ -405,7 +525,8 @@
                         },
                         body: JSON.stringify({ 
                             id, 
-                            quantity: parseInt(newQuantity)
+                            quantity: parseInt(newQuantity),
+                            Product_size: currentItem.Product_size
                         })
                     });
                     
@@ -416,7 +537,6 @@
                     console.error("Error updating quantity on server:", error);
                 }
                 
-                // Update UI
                 updateCart();
             }
         }
@@ -432,7 +552,7 @@
             
             // Remove from local storage first
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart = cart.filter(item => item.id !== id);
+            cart = cart.filter(item => item._id !== id);
             localStorage.setItem("cart", JSON.stringify(cart));
             
             // Then remove from server
@@ -483,7 +603,9 @@
         }
 
         document.getElementById("checkout-btn").addEventListener("click", function () {
-            let totalAmount = document.getElementById("cart-total").textContent;
+            const total = document.getElementById("total").textContent;
+            // Remove the ₹ symbol and store only the number
+            const totalAmount = total.replace('₹', '');
             localStorage.setItem("totalAmount", totalAmount);
             window.location.href = "form.html";
         });

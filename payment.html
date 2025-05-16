@@ -6,136 +6,51 @@
     <title>Payment Records - AM Apparel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #8c7000;
-            --secondary-color: #727249;
-            --accent-color: #e2e2b4;
-        }
-
-        body {
-            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
-            min-height: 100vh;
-            padding: 2rem 0;
-        }
-
-        .payment-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .page-title {
-            color: var(--primary-color);
-            font-family: 'Papyrus', cursive;
-            font-weight: 1000;
-            text-align: center;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .table thead th {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 1rem;
-            font-weight: 600;
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(140, 112, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .table td {
-            padding: 1rem;
-            vertical-align: middle;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .payment-status {
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .status-completed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .payment-amount {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .payment-date {
-            color: var(--secondary-color);
-            font-size: 0.9rem;
-        }
-
-        .payment-method {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .payment-method i {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-        }
-
-        @media (max-width: 768px) {
-            .payment-container {
-                padding: 1rem;
-            }
-
-            .table-responsive {
-                border-radius: 15px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles/admin.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container payment-container">
-        <h1 class="page-title">Payment Records</h1>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Customer ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Address</th>
-                        <th>Payment Method</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody id="paymentRecords"></tbody>
-            </table>
+    <div class="admin-container">
+        <div class="admin-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="admin-title">Payment Records</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 admin-breadcrumb">
+                            <li class="breadcrumb-item"><a href="account.html" class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Payments</li>
+                        </ol>
+                    </nav>
+                </div>
+                <a href="account.html" class="admin-btn admin-btn-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Payment Method</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentRecords"></tbody>
+                </table>
+            </div>
+
+            <!-- Download Button -->
+            <a href="#" onclick="downloadPDF()" class="admin-btn admin-btn-secondary">
+                <i class="fas fa-download me-2"></i>Download PDF
+            </a>
         </div>
     </div>
 
@@ -161,12 +76,18 @@
 
                 const payments = await response.json();
                 const paymentRecords = document.getElementById("paymentRecords");
-                paymentRecords.innerHTML = ''; // Clear existing records
+                paymentRecords.innerHTML = '';
 
                 if (payments.length === 0) {
                     paymentRecords.innerHTML = `
                         <tr>
-                            <td colspan="8" class="text-center">No payment records found</td>
+                            <td colspan="9" class="text-center">
+                                <div class="empty-state">
+                                    <i class="fas fa-file-invoice text-primary mb-3" style="font-size: 3rem;"></i>
+                                    <p class="h5 mb-2">No Payment Records Found</p>
+                                    <p class="text-muted">Payment records will appear here once transactions are made.</p>
+                                </div>
+                            </td>
                         </tr>
                     `;
                     return;
@@ -180,12 +101,18 @@
                         <td>${payment.email || 'N/A'}</td>
                         <td>${payment.contact || 'N/A'}</td>
                         <td>${payment.address || 'N/A'}</td>
-                        <td class="payment-method">
-                            <i class="fas fa-credit-card"></i>
-                            ${payment.paymentMethod || 'N/A'}
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-${payment.paymentMethod === 'COD' ? 'money-bill' : 'credit-card'} text-primary me-2"></i>
+                                ${payment.paymentMethod || 'N/A'}
+                            </div>
                         </td>
-                        <td class="payment-amount">₹${payment.amount || '0'}</td>
-                        <td class="payment-date">${payment.date ? new Date(payment.date).toLocaleString() : 'N/A'}</td>
+                        <td>
+                            <strong class="text-primary">₹${payment.amount || '0'}</strong>
+                        </td>
+                        <td>
+                            <small class="text-muted">${payment.date ? new Date(payment.date).toLocaleString() : 'N/A'}</small>
+                        </td>
                     `;
                     paymentRecords.appendChild(row);
                 });
@@ -194,25 +121,69 @@
                 const paymentRecords = document.getElementById("paymentRecords");
                 paymentRecords.innerHTML = `
                     <tr>
-                        <td colspan="8" class="text-center text-danger">
-                            Error loading payment records. Please try again later.
-                            <br>
-                            <small>${error.message}</small>
+                        <td colspan="9" class="text-center">
+                            <div class="alert alert-danger mb-0">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                Error loading payment records. Please try again later.
+                                <br>
+                                <small>${error.message}</small>
+                            </div>
                         </td>
                     </tr>
                 `;
             }
         }
 
-        // Check authentication and fetch payments when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = 'signin.html';
-                return;
+        async function updatePaymentStatus(customerId, currentStatus) {
+            try {
+                const token = localStorage.getItem('token');
+                const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
+
+                const response = await fetch(`http://localhost:5000/payments/${customerId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update payment status');
+                }
+
+                const statusBadge = document.getElementById(`payment-status-${customerId}`);
+                statusBadge.textContent = newStatus;
+                statusBadge.className = `status-badge ${newStatus === 'completed' ? 'success' : 'warning'}`;
+
+                localStorage.setItem('statusUpdate', JSON.stringify({
+                    type: 'payment',
+                    id: customerId,
+                    status: newStatus
+                }));
+                setTimeout(() => localStorage.removeItem('statusUpdate'), 100);
+
+                await fetchPayments();
+            } catch (error) {
+                console.error('Error updating payment status:', error);
+                alert('Failed to update payment status. Please try again.');
             }
-            fetchPayments();
-        });
+        }
+
+        // Updated PDF Download Function for full width and clarity
+        function downloadPDF() {
+            const element = document.querySelector('.admin-card');
+            const opt = {
+                margin: 0.5,
+                filename: 'payment-records.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 3, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchPayments);
     </script>
 </body>
 </html>

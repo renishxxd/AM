@@ -3,168 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN DASHBOARD</title>
+    <title>AM APPAREL | Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/admin.css">
     <style>
-        .section {
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #f8f9fa;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
+        .admin-profile {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px rgba(140, 112, 0, 0.05);
+            border: 1px solid rgba(140, 112, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-        .section:hover {
-            transform: scale(1.05);
+
+        .admin-profile .profile-info {
+            flex: 1;
         }
-        .notification-badge {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: red;
+
+        .admin-profile h1 {
+            color: #8c7000;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-profile p {
+            color: #727249;
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        .logout-btn {
+            background: #8c7000;
             color: white;
-            border-radius: 50%;
-            padding: 5px 10px;
-            font-size: 12px;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .low-stock-alert {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            display: none;
+
+        .logout-btn:hover {
+            background: #b39b4a;
+        }
+
+        .logout-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(140, 112, 0, 0.05);
+            border: 1px solid rgba(140, 112, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card h2 {
+            color: #8c7000;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card .value {
+            color: #2c2c2c;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">ADMIN DASHBOARD</h1>
-        
-        <!-- Low Stock Alerts Section -->
-        <div id="lowStockAlerts" class="mb-4">
-            <!-- Low stock notifications will be displayed here -->
+    <div class="admin-container">
+        <!-- Admin Profile Section -->
+        <div class="admin-profile">
+            <div class="profile-info">
+                <h1>Admin Profile</h1>
+                <h2>Administrator</h2>
+                <p>admin@gmail.com</p>
+            </div>
+            <button class="logout-btn" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <a href="payment.html" class="text-decoration-none text-dark">
-                    <div class="section p-4">
-                        <h2>Payment</h2>
-                        <p>Manage your transactions and billing information.</p>
-                    </div>
-                </a>
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h2>Total Orders</h2>
+                    <div class="value" id="totalOrders">7</div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <a href="user.html" class="text-decoration-none text-dark">
-                    <div class="section p-4">
-                        <h2>Users</h2>
-                        <p>View and manage user profiles and access permissions.</p>
-                    </div>
-                </a>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h2>Total Users</h2>
+                    <div class="value" id="totalUsers">7</div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <a href="customized_orders.html" class="text-decoration-none text-dark">
-                    <div class="section p-4">
-                        <h2>Customized Orders</h2>
-                        <p>Track and manage personalized orders.</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="contact1.html" class="text-decoration-none text-dark">
-                    <div class="section p-4">
-                        <h2>Contacts</h2>
-                        <p>Manage your contact details and support requests.</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="prod.html" class="text-decoration-none text-dark">
-                    <div class="section p-4">
-                        <h2>Edit products</h2>
-                        <p>Manage your Listed products.</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="report.html" class="text-decoration-none text-dark">
-                    <div class="section p-4">
-                        <h2>Reports</h2>
-                        <p>View sales, orders, and customer analytics.</p>
-                    </div>
-                </a>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h2>Total Revenue</h2>
+                    <div class="value" id="totalRevenue">₹4356.87</div>
+                </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <button id="logout-btn" class="btn btn-danger">Logout</button>
+
+        <!-- Main Sections -->
+        <div class="row g-4">
+            <div class="col-md-4">
+                <a href="payment.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-credit-card text-primary mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Payment</h4>
+                        <p class="text-muted mb-0">Manage transactions and billing</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="user.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-users text-info mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Users</h4>
+                        <p class="text-muted mb-0">Manage user profiles and access</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="customized_orders.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-tshirt text-success mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Custom Orders</h4>
+                        <p class="text-muted mb-0">Track personalized orders</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="contact1.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-envelope text-warning mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Contacts</h4>
+                        <p class="text-muted mb-0">Manage support requests</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="prod.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-box text-danger mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Products</h4>
+                        <p class="text-muted mb-0">Manage product listings</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="product.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-shopping-cart text-success mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Order Details</h4>
+                        <p class="text-muted mb-0">View all order information</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="report.html" class="text-decoration-none">
+                    <div class="admin-card">
+                        <i class="fas fa-chart-bar text-primary mb-3" style="font-size: 2rem;"></i>
+                        <h4 class="admin-title">Reports</h4>
+                        <p class="text-muted mb-0">View and download business reports</p>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Function to check for low stock items
-        function checkLowStock() {
-            const products = JSON.parse(localStorage.getItem('managedProducts')) || {
-                traditional: [],
-                formal: [],
-                casual: []
-            };
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'signin.html';
+                return;
+            }
 
-            const lowStockItems = [];
-
-            // Check all categories
-            ['traditional', 'formal', 'casual'].forEach(category => {
-                products[category].forEach(product => {
-                    if (product.stock <= 5) {
-                        lowStockItems.push({
-                            name: product.name,
-                            stock: product.stock,
-                            category: category
-                        });
+            try {
+                // Fetch dashboard statistics
+                const response = await fetch('http://localhost:5000/api/admin/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
                     }
                 });
-            });
 
-            // Display low stock alerts
-            const alertsContainer = document.getElementById('lowStockAlerts');
-            if (lowStockItems.length > 0) {
-                let alertsHtml = '<div class="alert alert-warning" role="alert">';
-                alertsHtml += '<h4 class="alert-heading">Low Stock Alert!</h4>';
-                alertsHtml += '<ul class="mb-0">';
-                lowStockItems.forEach(item => {
-                    alertsHtml += `<li>${item.name} (${item.category}): ${item.stock} items remaining</li>`;
+                if (response.ok) {
+            const data = await response.json();
+                    if (data.success) {
+                        const { stats } = data;
+                        // Update statistics display
+                        document.getElementById('totalOrders').textContent = stats.totalOrders;
+                        document.getElementById('totalUsers').textContent = stats.totalUsers;
+                        document.getElementById('totalRevenue').textContent = 
+                            `₹${stats.totalRevenue.toFixed(2)}`;
+                    } else {
+                        console.error('Failed to fetch stats:', data.message);
+                    }
+                } else {
+                    throw new Error('Failed to fetch statistics');
+                }
+            } catch (error) {
+                console.error('Error fetching dashboard stats:', error);
+                // Show error message to user
+                const statsCards = document.querySelectorAll('.stats-card .value');
+                statsCards.forEach(card => {
+                    card.textContent = 'Error';
+                    card.style.color = '#dc3545';
                 });
-                alertsHtml += '</ul></div>';
-                alertsContainer.innerHTML = alertsHtml;
-
-                // Send email notification
-                fetch('/notify/low-stock-bulk', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: JSON.stringify({
-                        items: lowStockItems,
-                        email: 'renishsundar123@gmail.com'
-                    })
-                }).catch(console.error);
-            } else {
-                alertsContainer.innerHTML = '';
             }
-        }
 
-        // Check low stock when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLowStock();
-            // Check every 5 minutes
-            setInterval(checkLowStock, 300000);
-        });
-
-        document.getElementById("logout-btn").addEventListener("click", function () {
-            localStorage.removeItem("token");
-            window.location.href = "signin.html";
+            // Handle logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'signin.html';
+            });
         });
     </script>
 </body>

@@ -279,43 +279,15 @@
             <div class="form-group">
                 <label class="form-label">Total Amount (₹)</label>
                 <input type="text" id="amount" class="form-control" readonly>
+                <small class="text-muted">Includes 18% GST</small>
             </div>
             <div class="form-group">
                 <label class="form-label">Payment Method</label>
                 <select class="payment-method-select" id="payment-method" required>
                     <option value="">Select Payment Method</option>
-                    <option value="upi">UPI</option>
-                    <option value="card">Credit/Debit Card</option>
+                    <option value="razorpay">Razorpay</option>
                     <option value="cod">Cash on Delivery</option>
                 </select>
-            </div>
-
-            <div id="upi-details" class="payment-details">
-                <div class="form-group">
-                    <label class="form-label">UPI Address</label>
-                    <input type="text" id="upi" class="form-control" placeholder="Enter UPI ID">
-                </div>
-            </div>
-
-            <div id="card-details" class="payment-details">
-                <div class="form-group">
-                    <label class="form-label">Cardholder Name</label>
-                    <input type="text" id="cardName" class="form-control" placeholder="Enter cardholder name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Card Number</label>
-                    <input type="text" id="cardNumber" class="form-control" placeholder="Enter card number">
-                </div>
-                <div class="card-row">
-                    <div class="card-col">
-                        <label class="form-label">Expiry Date</label>
-                        <input type="text" id="expiry" class="form-control" placeholder="MM/YY">
-                    </div>
-                    <div class="card-col">
-                        <label class="form-label">CVV</label>
-                        <input type="text" id="cvv" class="form-control" placeholder="Enter CVV">
-                    </div>
-                </div>
             </div>
 
             <button type="submit" class="btn-submit">Submit Payment</button>
@@ -333,108 +305,18 @@
         </div>
     </div>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let storedAmount = localStorage.getItem("totalAmount");
+            // Get the stored amount and display it
+            const storedAmount = localStorage.getItem("totalAmount");
             if (storedAmount) {
-                document.getElementById("amount").value = storedAmount;
+                // Parse the amount as a float and display it with 2 decimal places
+                const amount = parseFloat(storedAmount).toFixed(2);
+                document.getElementById("amount").value = amount;
             }
-        });
-
-        document.getElementById("payment-method").addEventListener("change", function () {
-            document.querySelectorAll(".payment-details").forEach(el => {
-                el.classList.remove("active");
-            });
-            let selectedMethod = this.value;
-            if (selectedMethod === "upi") {
-                document.getElementById("upi-details").classList.add("active");
-            } else if (selectedMethod === "card") {
-                document.getElementById("card-details").classList.add("active");
-            }
-        });
-
-        document.getElementById("payment-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
             
-            const paymentData = {
-                name: document.getElementById("name").value,
-                email: document.getElementById("email").value,
-                contact: document.getElementById("contact").value,
-                address: document.getElementById("address").value,
-                amount: document.getElementById("amount").value,
-                paymentMethod: document.getElementById("payment-method").value,
-                upi: document.getElementById("upi").value || null,
-                cardName: document.getElementById("cardName").value || null,
-                cardNumber: document.getElementById("cardNumber").value || null,
-                expiry: document.getElementById("expiry").value || null,
-                cvv: document.getElementById("cvv").value || null
-            };
-
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    alert('Please sign in to make a payment');
-                    window.location.href = 'signin.html';
-                    return;
-                }
-
-                const response = await fetch('http://localhost:5000/pay', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(paymentData)
-                });
-                const result = await response.json();
-                if (response.ok) {
-                    // Store payment data in localStorage
-                    const paymentDataToStore = {
-                        name: document.getElementById("name").value,
-                        email: document.getElementById("email").value,
-                        contact: document.getElementById("contact").value,
-                        address: document.getElementById("address").value,
-                        amount: document.getElementById("amount").value,
-                        paymentMethod: document.getElementById("payment-method").value,
-                        upi: document.getElementById("upi").value || null,
-                        cardName: document.getElementById("cardName").value || null,
-                        cardNumber: document.getElementById("cardNumber").value || null,
-                        customerId: result.customerId
-                    };
-                    localStorage.setItem('paymentData', JSON.stringify(paymentDataToStore));
-                    
-                    // Clear the cart after successful payment
-                    localStorage.removeItem('cart');
-                    localStorage.removeItem('totalAmount');
-                    
-                    // Show success message
-                    document.getElementById('customerId').textContent = result.customerId;
-                    document.getElementById('totalAmount').textContent = document.getElementById("amount").value;
-                    document.getElementById('bill-section').classList.add('active');
-                    
-                    // Redirect to bill page after 3 seconds
-                    setTimeout(() => {
-                        window.location.href = 'bill.html';
-                    }, 3000);
-                } else {
-                    alert(`Error: ${result.error}`);
-                }
-            } catch (error) {
-                alert('Payment failed. Please try again.');
-            }
-        });
-
-        function copyToClipboard() {
-            navigator.clipboard.writeText(document.getElementById('customerId').innerText);
-            const copyBtn = document.querySelector('.copy-btn');
-            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            setTimeout(() => {
-                copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy ID';
-            }, 2000);
-        }
-
-        // Authentication Script
-        document.addEventListener('DOMContentLoaded', function() {
+            // Rest of your existing DOMContentLoaded code...
             const token = localStorage.getItem('token');
             const userEmail = localStorage.getItem('userEmail');
             
@@ -455,6 +337,216 @@
                 window.location.href = 'signin.html';
             });
         });
+
+        document.getElementById("payment-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const paymentMethod = document.getElementById("payment-method").value;
+            
+            if (paymentMethod === "razorpay") {
+                await handleRazorpayPayment();
+            } else if (paymentMethod === "cod") {
+                await handleCODPayment();
+            }
+        });
+
+        async function handleRazorpayPayment() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please sign in to make a payment');
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
+                const amount = document.getElementById("amount").value;
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const contact = document.getElementById("contact").value;
+                const address = document.getElementById("address").value;
+                const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+                // Calculate GST and subtotal
+                const subtotal = parseFloat(amount) / 1.18; // Remove GST to get subtotal
+                const gst = subtotal * 0.18;
+
+                // Create order on server
+                const response = await fetch('http://localhost:5000/create-order', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        amount: amount * 100, // Convert to paise
+                        currency: 'INR',
+                        receipt: 'order_' + Date.now(),
+                        subtotal: subtotal,
+                        gst: gst
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create order');
+                }
+
+                const orderData = await response.json();
+
+                // Initialize Razorpay
+                const options = {
+                    key: 'rzp_test_IH6xfrVyX8QMRe',
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: 'AM Apparel',
+                    description: 'Payment for your order (Includes 18% GST)',
+                    order_id: orderData.id,
+                    handler: async function(response) {
+                        try {
+                            const verifyResponse = await fetch('http://localhost:5000/verify-payment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify({
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    amount: amount,
+                                    subtotal: subtotal,
+                                    gst: gst,
+                                    name: name,
+                                    email: email,
+                                    contact: contact,
+                                    address: address,
+                                    cartItems: cartItems
+                                })
+                            });
+
+                            if (!verifyResponse.ok) {
+                                throw new Error('Payment verification failed');
+                            }
+
+                            const result = await verifyResponse.json();
+                            
+                            // Store payment data with cart items
+                            const paymentDataToStore = {
+                                name: name,
+                                email: email,
+                                contact: contact,
+                                address: address,
+                                amount: amount,
+                                subtotal: subtotal,
+                                gst: gst,
+                                paymentMethod: 'razorpay',
+                                customerId: result.customerId,
+                                cartItems: cartItems,
+                                paymentId: response.razorpay_payment_id,
+                                orderId: result.orderId
+                            };
+                            localStorage.setItem('paymentData', JSON.stringify(paymentDataToStore));
+                            
+                            // Clear cart
+                            localStorage.removeItem('cart');
+                            localStorage.removeItem('totalAmount');
+                            
+                            // Redirect to bill page
+                            window.location.href = 'bill.html';
+                        } catch (error) {
+                            console.error('Payment verification error:', error);
+                            alert('Payment verification failed. Please contact support.');
+                        }
+                    },
+                    prefill: {
+                        name: name,
+                        email: email,
+                        contact: contact
+                    },
+                    theme: {
+                        color: '#8C7A4D'
+                    }
+                };
+
+                const razorpay = new Razorpay(options);
+                razorpay.open();
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Failed to process payment. Please try again.');
+            }
+        }
+
+        async function handleCODPayment() {
+            const amount = document.getElementById("amount").value;
+            const subtotal = parseFloat(amount) / 1.18; // Remove GST to get subtotal
+            const gst = subtotal * 0.18;
+
+            const paymentData = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                contact: document.getElementById("contact").value,
+                address: document.getElementById("address").value,
+                amount: amount,
+                subtotal: subtotal,
+                gst: gst,
+                paymentMethod: 'cod',
+                cartItems: JSON.parse(localStorage.getItem('cart')) || []
+            };
+
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please sign in to make a payment');
+                    window.location.href = 'signin.html';
+                    return;
+                }
+
+                const response = await fetch('http://localhost:5000/pay', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    // Store payment data in localStorage with cart items
+                    const paymentDataToStore = {
+                        name: document.getElementById("name").value,
+                        email: document.getElementById("email").value,
+                        contact: document.getElementById("contact").value,
+                        address: document.getElementById("address").value,
+                        amount: amount,
+                        subtotal: subtotal,
+                        gst: gst,
+                        paymentMethod: 'cod',
+                        customerId: result.customerId,
+                        cartItems: paymentData.cartItems
+                    };
+                    localStorage.setItem('paymentData', JSON.stringify(paymentDataToStore));
+                    
+                    // Clear the cart after successful payment
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('totalAmount');
+                    
+                    // Redirect to bill page
+                    window.location.href = 'bill.html';
+                } else {
+                    alert(`Error: ${result.error}`);
+                }
+            } catch (error) {
+                alert('Payment failed. Please try again.');
+            }
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(document.getElementById('customerId').innerText);
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy ID';
+            }, 2000);
+        }
     </script>
 </body>
 </html>

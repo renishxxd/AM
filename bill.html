@@ -3,376 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Bill - AM Apparel</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Bill - AM Apparel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #8c7000;
-            --secondary-color: #727249;
-            --accent-color: #e2e2b4;
-        }
-
-        body {
-            background: linear-gradient(135deg, rgba(140, 112, 0, 0.1), rgba(114, 114, 73, 0.1));
-            min-height: 100vh;
-            padding: 2rem 0;
-            font-family: 'Poppins', sans-serif;
-        }
-
         .bill-container {
             max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-
         .bill-header {
             text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 30px;
         }
-
-        .company-logo {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 1rem;
-        }
-
-        .company-name {
-            color: var(--primary-color);
-            font-family: 'Papyrus', cursive;
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .bill-title {
-            color: var(--secondary-color);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
         .bill-details {
-            margin-bottom: 2rem;
+            margin-bottom: 20px;
         }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            background: rgba(140, 112, 0, 0.05);
-            border-radius: 5px;
+        .table th {
+            background-color: #f8f9fa;
         }
-
-        .detail-label {
-            font-weight: 600;
-            color: var(--secondary-color);
+        .total-section {
+            margin-top: 20px;
+            border-top: 2px solid #dee2e6;
+            padding-top: 20px;
         }
-
-        .detail-value {
-            color: var(--primary-color);
+        .payment-info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
         }
-
-        .payment-summary {
-            background: rgba(140, 112, 0, 0.1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .total-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-align: right;
-            margin-top: 1rem;
-        }
-
-        .download-btn {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .home-btn {
-            background: var(--accent-color);
-            color: var(--primary-color);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .home-btn:hover {
-            background: var(--secondary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--secondary-color);
-            font-size: 0.9rem;
-        }
-
         @media print {
-            body {
-                background: white;
-            }
-            .bill-container {
-                box-shadow: none;
-            }
-            .download-btn {
+            .no-print {
                 display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="bill-container" id="bill">
-            <div class="bill-header">
-                <img src="cmp-logo3-removebg-preview.png" alt="AM Apparel Logo" class="company-logo">
-                <h1 class="company-name">AM Apparel</h1>
-                <h2 class="bill-title">Payment Receipt</h2>
-            </div>
+    <div class="bill-container">
+        <div class="bill-header">
+            <h2>AM Apparel</h2>
+            <p>Invoice</p>
+        </div>
 
-            <div class="bill-details">
-                <div class="detail-row">
-                    <span class="detail-label">Customer ID:</span>
-                    <span class="detail-value" id="customerId"></span>
+        <div class="bill-details">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Customer Details:</h5>
+                    <p id="customerName"></p>
+                    <p id="customerEmail"></p>
+                    <p id="customerContact"></p>
+                    <p id="customerAddress"></p>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Date:</span>
-                    <span class="detail-value" id="paymentDate"></span>
+                <div class="col-md-6 text-end">
+                    <h5>Order Details:</h5>
+                    <p id="orderId"></p>
+                    <p id="orderDate"></p>
+                    <p id="paymentMethod"></p>
+                    <p id="paymentId"></p>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Name:</span>
-                    <span class="detail-value" id="customerName"></span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Email:</span>
-                    <span class="detail-value" id="customerEmail"></span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Contact:</span>
-                    <span class="detail-value" id="customerContact"></span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Address:</span>
-                    <span class="detail-value" id="customerAddress"></span>
-                </div>
-            </div>
-
-            <div class="payment-summary">
-                <h3 class="text-center mb-3">Order Details</h3>
-                <div class="table-responsive mb-3">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productDetails">
-                            <!-- Product rows will be inserted here -->
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
-                                <td>₹<span id="subtotal"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="text-end"><strong>Tax (18%):</strong></td>
-                                <td>₹<span id="tax"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
-                                <td>₹<span id="totalAmount"></span></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="detail-row">
-                    <span class="detail-label">Payment Method:</span>
-                    <span class="detail-value" id="paymentMethod"></span>
-                </div>
-                <div id="upiDetails" style="display: none;">
-                    <div class="detail-row">
-                        <span class="detail-label">UPI ID:</span>
-                        <span class="detail-value" id="upiId"></span>
-                    </div>
-                </div>
-                <div id="cardDetails" style="display: none;">
-                    <div class="detail-row">
-                        <span class="detail-label">Card Name:</span>
-                        <span class="detail-value" id="cardName"></span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Card Number:</span>
-                        <span class="detail-value" id="cardNumber"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer">
-                <p>Thank you for your purchase!</p>
-                <p>For any queries, please contact amappareltextile@gmail.com</p>
             </div>
         </div>
 
-        <button class="download-btn mt-3" onclick="downloadBill()">
-            <i class="fas fa-download me-2"></i>Download Bill
-        </button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="itemsList">
+            </tbody>
+        </table>
 
-        <button class="home-btn mt-3" onclick="goToHome()">
-            <i class="fas fa-home me-2"></i>Back to Home
-        </button>
+        <div class="total-section">
+            <div class="row">
+                <div class="col-md-6 offset-md-6">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td>Subtotal:</td>
+                            <td id="subtotal" class="text-end"></td>
+                        </tr>
+                        <tr>
+                            <td>GST (18%):</td>
+                            <td id="gst" class="text-end"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Amount:</strong></td>
+                            <td id="totalAmount" class="text-end"><strong></strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-info">
+            <p class="mb-0">Payment Status: <span class="text-success">Successful</span></p>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-primary no-print" onclick="window.print()">Print Bill</button>
+            <a href="code.html" class="btn btn-secondary no-print">Back to Home</a>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
-        // Get payment details from localStorage
         document.addEventListener('DOMContentLoaded', function() {
             const paymentData = JSON.parse(localStorage.getItem('paymentData'));
-            const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             
             if (!paymentData) {
-                alert('No payment data found');
                 window.location.href = 'form.html';
                 return;
             }
 
-            // Fill in the bill details
-            document.getElementById('customerId').textContent = paymentData.customerId || 'N/A';
-            document.getElementById('paymentDate').textContent = new Date().toLocaleDateString();
-            document.getElementById('customerName').textContent = paymentData.name;
-            document.getElementById('customerEmail').textContent = paymentData.email;
-            document.getElementById('customerContact').textContent = paymentData.contact;
-            document.getElementById('customerAddress').textContent = paymentData.address;
-            document.getElementById('paymentMethod').textContent = paymentData.paymentMethod.toUpperCase();
+            // Format currency function
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(amount);
+            }
 
-            // Display product details
-            const productTableBody = document.getElementById('productDetails');
+            // Fill customer details
+            document.getElementById('customerName').textContent = `Name: ${paymentData.name}`;
+            document.getElementById('customerEmail').textContent = `Email: ${paymentData.email}`;
+            document.getElementById('customerContact').textContent = `Contact: ${paymentData.contact}`;
+            document.getElementById('customerAddress').textContent = `Address: ${paymentData.address}`;
+
+            // Fill order details
+            document.getElementById('orderId').textContent = `Order ID: ${paymentData.orderId || paymentData.customerId}`;
+            document.getElementById('orderDate').textContent = `Date: ${new Date().toLocaleDateString()}`;
+            document.getElementById('paymentMethod').textContent = `Payment Method: ${paymentData.paymentMethod.charAt(0).toUpperCase() + paymentData.paymentMethod.slice(1)}`;
+            if (paymentData.paymentId) {
+                document.getElementById('paymentId').textContent = `Payment ID: ${paymentData.paymentId}`;
+            }
+
+            // Fill items list
+            const itemsList = document.getElementById('itemsList');
             let subtotal = 0;
 
-            // Clear existing rows
-            productTableBody.innerHTML = '';
-
-            if (cartItems && cartItems.length > 0) {
-                cartItems.forEach(item => {
-                    const row = document.createElement('tr');
-                    const itemPrice = parseFloat(item.price.replace('₹', '').replace(',', ''));
-                    const itemQuantity = parseInt(item.quantity);
-                    const itemTotal = itemPrice * itemQuantity;
-                    subtotal += itemTotal;
-
-                    row.innerHTML = `
-                        <td>${item.name}</td>
-                        <td>${itemQuantity}</td>
-                        <td>₹${itemPrice.toFixed(2)}</td>
-                        <td>₹${itemTotal.toFixed(2)}</td>
-                    `;
-                    productTableBody.appendChild(row);
-                });
-            } else {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td colspan="4" class="text-center">No items found</td>
-                `;
-                productTableBody.appendChild(row);
-            }
-
-            // Calculate and display totals
-            const tax = subtotal * 0.18; // 18% tax
-            const total = subtotal + tax;
-
-            document.getElementById('subtotal').textContent = subtotal.toFixed(2);
-            document.getElementById('tax').textContent = tax.toFixed(2);
-            document.getElementById('totalAmount').textContent = total.toFixed(2);
-
-            // Show payment method specific details
-            if (paymentData.paymentMethod === 'upi') {
-                document.getElementById('upiDetails').style.display = 'block';
-                document.getElementById('upiId').textContent = paymentData.upi;
-            } else if (paymentData.paymentMethod === 'card') {
-                document.getElementById('cardDetails').style.display = 'block';
-                document.getElementById('cardName').textContent = paymentData.cardName;
-                document.getElementById('cardNumber').textContent = '**** **** **** ' + paymentData.cardNumber.slice(-4);
-            }
-
-            // Store the order details
-            const orderDetails = {
-                orderId: generateOrderId(),
-                date: new Date().toISOString(),
-                items: cartItems,
-                subtotal: subtotal,
-                tax: tax,
-                total: total,
-                paymentMethod: paymentData.paymentMethod,
-                customerDetails: {
-                    name: paymentData.name,
-                    email: paymentData.email,
-                    contact: paymentData.contact,
-                    address: paymentData.address
-                }
-            };
+            // Get cart items from paymentData
+            const cartItems = paymentData.cartItems || [];
             
-            // Get existing orders or initialize empty array
-            const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
-            existingOrders.push(orderDetails);
-            localStorage.setItem('orders', JSON.stringify(existingOrders));
+            cartItems.forEach(item => {
+                const row = document.createElement('tr');
+                // Use the correct property names based on the data structure
+                const itemPrice = parseFloat(item.Product_price || item.price);
+                const itemQuantity = parseInt(item.Quantity || item.quantity);
+                const itemTotal = itemPrice * itemQuantity;
+                subtotal += itemTotal;
+                
+                row.innerHTML = `
+                    <td>${item.Product_Name || item.name}</td>
+                    <td>${itemQuantity}</td>
+                    <td>${formatCurrency(itemPrice)}</td>
+                    <td>${formatCurrency(itemTotal)}</td>
+                `;
+                itemsList.appendChild(row);
+            });
 
-            // Clear cart after generating bill
+            // Calculate and fill totals
+            const gstAmount = subtotal * 0.18;
+            const totalAmount = subtotal + gstAmount;
+
+            document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+            document.getElementById('gst').textContent = formatCurrency(gstAmount);
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+
+            // Store order in localStorage for history
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push({
+                orderId: paymentData.orderId || paymentData.customerId,
+                date: new Date().toISOString(),
+                amount: totalAmount,
+                paymentMethod: paymentData.paymentMethod,
+                items: cartItems
+            });
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Clear the cart after generating the bill
             localStorage.removeItem('cart');
-            localStorage.removeItem('totalAmount');
         });
-
-        // Generate a unique order ID
-        function generateOrderId() {
-            return 'ORD' + Date.now().toString().slice(-6) + Math.random().toString(36).substr(2, 4).toUpperCase();
-        }
-
-        function downloadBill() {
-            const element = document.getElementById('bill');
-            const opt = {
-                margin: 1,
-                filename: 'AM_Apparel_Payment_Receipt.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save();
-        }
-
-        function goToHome() {
-            window.location.href = 'code.html';
-        }
     </script>
 </body>
 </html> 
